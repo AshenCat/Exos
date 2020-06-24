@@ -1,32 +1,28 @@
 import React from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import {Link} from 'react-router-dom';
 
 const Header = () => {
   return ( 
     <React.Fragment>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="/">Exos Heroes Hub</Navbar.Brand>
+        <Link  className="navbar-brand" to="/">Exos Heroes Hub</Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="/Characters">Characters</Nav.Link>
-            <Nav.Link href="/Mechanincs">Mechanics</Nav.Link>
+            <Link className="nav-link" to="/Characters">Characters</Link>
+            <Link className="nav-link" to="/Mechanics">Mechanics</Link>
+            <Link className="nav-link" to="/Items">Items</Link>
             <NavDropdown title="Guides" id="collasible-nav-dropdown">
-              <NavDropdown.Item>Labyrinth</NavDropdown.Item>
-              <NavDropdown.Item>Challenges</NavDropdown.Item>
-              <NavDropdown.Item>Something</NavDropdown.Item>
+              <NavDropdown.Item><Link className="dropdown-item" to="/Labyrinth">Labyrinth</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link className="dropdown-item" to="/Challenges">Challenges</Link></NavDropdown.Item>
+              <NavDropdown.Item><Link className="dropdown-item" to="/Others">Something</Link></NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item>Rerolling</NavDropdown.Item>
+              <NavDropdown.Item><Link className="dropdown-item" to="/Rerolling">Rerolling</Link></NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <Nav>
-            <Nav.Link href="#deets" 
-              style={{borderRight: "1px solid gray", marginRight:"4px"}}>
-                Register
-            </Nav.Link>
-            <Nav.Link eventKey={2} href="#memes" style={{paddingLeft:"4px"}}>
-              Login
-            </Nav.Link>
+            <Link className="nav-link" to="/Login">Login</Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
