@@ -9,7 +9,7 @@ const model = require('../models/user');
 server.route('/')
     // return
     .get((req,res,next)=>{
-        model.find({}, (err, data) => {
+        model.find({},(err, data) => {
             if(err) {
                 res.status(500);
                 next(err);
@@ -85,10 +85,22 @@ server.route('/')
     .delete((req,res,next)=>{
         res.send('delete')
     })
+    .post((req,res,next) => {
+        model.find(req.body, (err, data)=>{
+            if (err) {
+                res.status(500);
+                next(err)
+            }
+            res.json({
+                msg: !data ? "User not found" : "Successfully logged in!",
+                payload: !data ? null : data
+            })    
+        })
+    })
 
 server.route('/:username')
     .get((req,res,next) => {
-        model.findOne({username: req.params.username}, (err, data) => {
+        model.findOne({username: req.params.username}, {}, (err, data) => {
             if(err) {
                 res.status(500);
                 next(err)
