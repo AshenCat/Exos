@@ -28,11 +28,9 @@ app.use(helmet());
 
 //Routes section
 app.use('/api/user', modelRoute);
-app.use((req, res, next)=> {
-    if(res.statusCode === 200) res.status(404)
-    next()
-})
+
 app.use((req,res)=> {
+    if(res.statusCode === 200) res.status(404)
     const error = new Error(`Request not found - ${req.originalUrl}`);
     res.json({
         msg: "🐱‍👤" + error.message,
@@ -40,4 +38,4 @@ app.use((req,res)=> {
     })
 })
 
-app.listen(port, ()=>console.log(`App is listening at: http://localhost:${port}`));
+app.listen(port, () => console.log(`App is listening at: http://localhost:${port}`));
