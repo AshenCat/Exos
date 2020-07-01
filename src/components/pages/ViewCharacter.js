@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom'
-import { Card, Nav, Container } from 'react-bootstrap';
+import { Card, Accordion, Button, Container, Col, Row, ListGroup, CardColumns } from 'react-bootstrap';
 
 class ViewCharacter extends Component {
     componentDidMount(){
@@ -11,50 +11,130 @@ class ViewCharacter extends Component {
 
     state = { 
         name: null,
-        isNotAdmin: true,
         character: {}
     }
-
-    switch = (e) => {
-        console.log(e)
-    }
-
-    displaySwitch = () => {
-
-    }
-
+    
     displayCharacter = () => {
-        const isNotAdmin = this.state.isNotAdmin;
         const character = this.props.character;
         return(
-            <Container>
-                <Card>
-                  <Card.Header>
-                    <Nav variant="tabs" defaultActiveKey="#profile" className="justify-content-end">
-                      <Nav.Item>
-                        <Nav.Link href="#profile" name="profile" onClick={(e) => this.switch(e.target.name)}>Profile</Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link href="#stats" name="stats" onClick={e => this.switch(e.target.name)}>Stats</Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link href="#modify" disabled={isNotAdmin}>
-                          Modify
-                        </Nav.Link>
-                      </Nav.Item>
-                    </Nav>
-                  </Card.Header>
-                  <div className="p-4">
-                    <img className="f-l m-2 img-frame" src={require("../../img/" + character.tier + "/" + character.name + ".JPG")} alt={`${character.name}`}/>
-                    <Card.Title className="p-4 text-center">{character.name}</Card.Title>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col">Element :</div>
-                            <div className="col">{character.element}</div>
-                        </div>
-                    </div>
-                  </div>
-                </Card>
+            <Container className="mt-4">
+              <Row>
+                <Col sm={3} style={{}}>
+                  <h2 className="text-center">{character.name}</h2>
+                  <h3 className="text-center">{character.title}</h3>
+                  <Container fluid className="force-center"><img className="f-l m-2 img-frame" src={require("../../img/" + character.tier + "/" + character.name + ".JPG")} alt={`${character.name}`}/></Container >
+                </Col>
+                <Col>
+                <Accordion defaultActiveKey="0">
+                  <Card>
+                    <Card.Header>
+                      <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                        Bio
+                      </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="0">
+                      <Card.Body>
+                        {/*
+                        name: "Garff",
+                        role: "Paladin",
+                        sex: "Male",
+                        nation: "Saint West",
+                        tier: "Fated",
+                        element: "Light",
+                        age: "55",
+                        race: "Dwarf",
+                        position: "Defense",
+                        type: "Physical",
+                        */}
+                        <CardColumns>
+                        <Card className="m-3">
+                            <Card.Header className="text-center">
+                              Role
+                            </Card.Header>
+                            <Card.Body className="text-center">
+                              {character.role}
+                            </Card.Body>
+                          </Card>
+                          <Card className="m-3">
+                            <Card.Header className="text-center">
+                              Sex
+                            </Card.Header>
+                            <Card.Body className="text-center">
+                              {character.sex}
+                            </Card.Body>
+                          </Card>
+                          <Card className="m-3">
+                            <Card.Header className="text-center">
+                              Nation
+                            </Card.Header>
+                            <Card.Body className="text-center">
+                              {character.nation}
+                            </Card.Body>
+                          </Card>
+                          <Card className="m-3">
+                            <Card.Header className="text-center">
+                              Tier
+                            </Card.Header>
+                            <Card.Body className="text-center">
+                              {character.tier}
+                            </Card.Body>
+                          </Card>
+                          <Card className="m-3">
+                            <Card.Header className="text-center">
+                              Element
+                            </Card.Header>
+                            <Card.Body className="text-center">
+                              {character.element}
+                            </Card.Body>
+                          </Card>
+                        </CardColumns>
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                  <Card>
+                    <Card.Header>
+                      <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                        Skills
+                      </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="1">
+                      <Card.Body>
+                        <ListGroup variant="flush">
+                          <ListGroup.Item>
+                            <div className="pre-wrap-me"><b>[Passive] {character.skills.passive.name}</b></div>
+                            {character.skills.passive.description.map((skill, no) => {
+                              return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
+                            })}
+                          </ListGroup.Item>
+                          <ListGroup.Item>
+                            <div className="pre-wrap-me"><b>[Active 1] {character.skills.active1.name} - Cost: {character.skills.active1.cost}</b></div>
+                            {character.skills.active1.description.map((skill, no) => {
+                              return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
+                            })}
+                          </ListGroup.Item>
+                          <ListGroup.Item>
+                            <div className="pre-wrap-me"><b>[Active 2] {character.skills.active2.name} - Cost: {character.skills.active2.cost}</b></div>
+                            {character.skills.active2.description.map((skill, no) => {
+                              return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
+                            })}
+                          </ListGroup.Item>
+                        </ListGroup>
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                  <Card>
+                    <Card.Header>
+                      <Accordion.Toggle as={Button} variant="link" eventKey="2">
+                        Backstory
+                      </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="2">
+                      <Card.Body className="pre-wrap-me">{character.description}</Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                </Accordion>
+                </Col>
+              </Row>
             </Container>
         )
     }

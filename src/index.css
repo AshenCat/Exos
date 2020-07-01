@@ -32,3 +32,12 @@ a.characters-title{
 .btn-twin {
   margin: 5px;
 }
+
+.pre-wrap-me {
+  white-space: pre-wrap;
+}
+
+
+.force-center {
+  margin: 0 auto !important;
+}
