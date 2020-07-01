@@ -112,7 +112,7 @@ server.route('/')
                     if(err) throw err;
                     res.json({
                         msg:  "Successfully logged in!",
-                        payload: user
+                        payload: req.user
                     }) 
                 })
             }

@@ -1,9 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import { Navbar, Nav, NavDropdown, Form, InputGroup, Col, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Form, InputGroup, Col, Button, Spinner } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 const Header = () => {
+  
+  const [session, setSession] = React.useState(null)
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
   const logout = (e) => {
     e.preventDefault();
     axios.post('http://localhost:7172/api/user/logout', {}, {withCredentials: true})
@@ -22,24 +27,23 @@ const Header = () => {
     axios.post('http://localhost:7172/api/user', {username, password}, {withCredentials: true})
       .then((res) => {
         console.log(res.data.payload)
-        if(res.data.payload.username) setSession(res)
+        if(res.data.payload) setSession(res.data.payload)
       })
       .catch(err=>{
         console.log(`Error 🐱‍👤 : ${err}`)
       })
   }
+
   React.useEffect(() => {
-    if(!session) 
-      axios.post('http://localhost:7172/api/user/auth',{}, {withCredentials: true})
-        .then(res => {
-            console.log(res)
+    axios.post('http://localhost:7172/api/user/auth',{}, {withCredentials: true})
+      .then(res => {
+          if(!session) {
+            console.log(res.data)
             setSession(res.data)
-        })
-  })
-  const [session, setSession] = React.useState(null)
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  
+          }
+      })
+  }, [session])
+
   return ( 
     <React.Fragment>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -48,7 +52,6 @@ const Header = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
             <Link className="nav-link" to="/Characters">Characters</Link>
-            <Link className="nav-link" to="/Mechanics">Mechanics</Link>
             <Link className="nav-link" to="/Items">Items</Link>
             <NavDropdown title="Guides" id="collasible-nav-dropdown">
               <NavDropdown.Item><Link className="dropdown-item" to="/Labyrinth">Labyrinth</Link></NavDropdown.Item>
@@ -57,9 +60,11 @@ const Header = () => {
               <NavDropdown.Divider />
               <NavDropdown.Item><Link className="dropdown-item" to="/Rerolling">Rerolling</Link></NavDropdown.Item>
             </NavDropdown>
+            <Link className="nav-link" to="/Register">Register</Link>
           </Nav>
           <Nav>
-            {!session ? <Form inline>
+            {!session ? 
+            <Form inline>
               <Form.Row className="align-items-center">
                 <Col>
                   <Form.Group controlId="formUsername">
