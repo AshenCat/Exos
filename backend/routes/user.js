@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const saltRounds = 10
 const server = express.Router();
+const passport = require("passport");
 
 const model = require('../models/user');
 
@@ -86,6 +87,7 @@ server.route('/')
         res.send('delete')
     })
     .post((req,res,next) => {
+        /*
         model.find(req.body, (err, data)=>{
             if (err) {
                 res.status(500);
@@ -96,6 +98,25 @@ server.route('/')
                 payload: !data ? null : data
             })    
         })
+        */
+       //console.log(`posted`);
+       passport.authenticate("local", (err,user,info) => {
+           if (err) {
+                res.status(500);
+                next(err)
+            }
+            if (!user) res.json({msg: "User not found", payload: null})
+            else {
+                req.logIn(user, err => {
+                    //console.log(user)
+                    if(err) throw err;
+                    res.json({
+                        msg:  "Successfully logged in!",
+                        payload: user
+                    }) 
+                })
+            }
+       })(req,res,next)
     })
 
 server.route('/:username')
@@ -112,4 +133,17 @@ server.route('/:username')
         })
     })
 
+server.route('/auth')
+    .post((req,res,next) => {
+        res.json(req.user)
+    })
+
+server.route('/logout')
+    .post((req,res,next) => {
+        req.logOut();
+        res.json({
+            msg: `Successfulyl logged out`,
+            payload: null
+        })
+    })
 module.exports = server;

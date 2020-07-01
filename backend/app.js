@@ -4,27 +4,46 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const passport = require("passport");
+const session = require('express-session');
 const fs = require('fs');
 const path = require('path');
-
 const modelRoute = require('./routes/user');
 const config = require('./config/dbconf');
 
 const port = 7172;
 
+mongoose.set('useCreateIndex', true);
 mongoose.connect(config.local, {useNewUrlParser: true, useUnifiedTopology: true}).then(
     ()=>console.log(`Successfully connected to the database locally`), err => 
     console.log(`Failed to connect: ${err}`)
 )
+
 const app = express();
 
 // Middleware section
 let wstream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
+app.use(session({
+    secret: "weebiesInTheHaus",
+    resave: true,
+    saveUninitialized: true
+}))
+app.use(cookieParser("weebiesInTheHaus"))
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passportConfig')(passport);
 app.use(morgan('common', {stream: wstream}));
 app.use(helmet());
+
+
 
 //Routes section
 app.use('/api/user', modelRoute);
