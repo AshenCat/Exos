@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Navbar, Nav, NavDropdown, Form, InputGroup, Col, Button, Spinner } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Form, InputGroup, Col, Button } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 const Header = () => {
