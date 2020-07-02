@@ -17,6 +17,11 @@ let userSchema = new Schema({
         required: true,
         unique: true
     },
+    access: {
+        type: String,
+        enum: ["admin", "user", "tech"],
+        required: true,
+    }
 }, 
 {timestamps: true}
 )
