@@ -24,7 +24,7 @@ class Content extends React.Component {
                 active1: { name: "Eagle Blow", cost: 2, description: ["[Single] Deals 375% damage to 1 enemy"]},
                 active2: { name: "General's Call", cost: 5, description: ["[Back Row First] Deals 420% damage to all back row enemies"]}
             },
-            maxStats: {
+            maxStats: [{
                 level: 100,
                 power: 282000,
                 HP: 6816,
@@ -40,7 +40,7 @@ class Content extends React.Component {
                 criticalDamage: 150,
                 blockDefenceRate: 50,
                 luck: 0
-            },
+            }],
             trivias: []
         },
         {
