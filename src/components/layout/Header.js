@@ -13,6 +13,9 @@ const Header = () => {
     e.preventDefault();
     axios.post('http://localhost:7172/api/user/logout', {}, {withCredentials: true})
       .then((res) => {
+        setUsername(null);
+        setPassword(null);
+        console.log(`logout:`)
         console.log(res.data)
         setSession(null);
       })
@@ -26,6 +29,7 @@ const Header = () => {
     e.preventDefault();
     axios.post('http://localhost:7172/api/user', {username, password}, {withCredentials: true})
       .then((res) => {
+        console.log(`Login:`)
         console.log(res.data.payload)
         if(res.data.payload) setSession(res.data.payload)
       })
@@ -38,6 +42,7 @@ const Header = () => {
     axios.post('http://localhost:7172/api/user/auth',{}, {withCredentials: true})
       .then(res => {
           if(!session) {
+            console.log("useEffect on header : ")
             console.log(res.data)
             setSession(res.data)
           }
@@ -54,11 +59,11 @@ const Header = () => {
             <Link className="nav-link" to="/Characters">Characters</Link>
             <Link className="nav-link" to="/Items">Items</Link>
             <NavDropdown title="Guides" id="collasible-nav-dropdown">
-              <NavDropdown.Item><Link className="dropdown-item" to="/Labyrinth">Labyrinth</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link className="dropdown-item" to="/Challenges">Challenges</Link></NavDropdown.Item>
-              <NavDropdown.Item><Link className="dropdown-item" to="/Others">Something</Link></NavDropdown.Item>
+              <Link className="dropdown-item" to="/Labyrinth">Labyrinth</Link>
+              <Link className="dropdown-item" to="/Challenges">Challenges</Link>
+              <Link className="dropdown-item" to="/Others">Something</Link>
               <NavDropdown.Divider />
-              <NavDropdown.Item><Link className="dropdown-item" to="/Rerolling">Rerolling</Link></NavDropdown.Item>
+              <Link className="dropdown-item" to="/Rerolling">Rerolling</Link>
             </NavDropdown>
             <Link className="nav-link" to="/Register">Register</Link>
           </Nav>
@@ -87,7 +92,12 @@ const Header = () => {
               <Button variant="outline-primary" onClick={submit}>Login</Button>
             </Form>
             :
-            <div style={{'color': 'white'}}>Hello, {session.username} <Button onClick={logout}>Logout</Button></div>}
+            
+              <NavDropdown alignRight title={`Hi, ${session.username}`} id="collasible-nav-dropdown">
+                <Link className="dropdown-item" to={`/Profile/${session.username}`}>Profile</Link>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+              </NavDropdown>}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
