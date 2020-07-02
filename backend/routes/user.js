@@ -49,7 +49,8 @@ server.route('/')
                                 model.create({
                                     username: req.body.username,
                                     password: hash,
-                                    email: req.body.email
+                                    email: req.body.email,
+                                    access: 'user'
                                 }).then((doc, err) =>{
                                     if (err) {
                                         res.status(500);
@@ -126,9 +127,10 @@ server.route('/:username')
                 res.status(500);
                 next(err)
             }
+            //console.log(data)
             res.json({
                 msg: !data ? `User: '${req.params.username}' not found` : "User found",
-                payload: data
+                payload: req.user ? req.user.access === 'admin' ? data : data.username : data ? data.username : data
             })
         })
     })
