@@ -6,7 +6,9 @@ const Home = (props) => {
     const [data, setData] = React.useState(null)
     return (
         <div>
-            {data ? data.username : null}
+            <h1>Auth check: </h1>
+            {data ? data.username : "Not authenticated"}
+            <br/>
             <Button onClick={
                 (e)=>{
                     
@@ -17,7 +19,8 @@ const Home = (props) => {
                         setData(res.data)
                     })  
                 }
-            }>Click</Button>
+            }>Check if authenticated</Button>
+            <div>Please head to Characters tab...</div>
         </div>
     );
 }
