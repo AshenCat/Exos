@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom'
-import { Card, Accordion, Button, Container, Col, Row, ListGroup, CardColumns } from 'react-bootstrap';
+import { Card, Accordion, Button, Container, Col, Row, ListGroup } from 'react-bootstrap';
 
 class ViewCharacter extends Component {
     componentDidMount(){
@@ -89,39 +89,52 @@ class ViewCharacter extends Component {
                         position: "Defense",
                         type: "Physical",
                         */}
-                        <CardColumns>
-                        <Card className="m-3">
-                            <Card.Header className="text-center">
-                              Role
-                            </Card.Header>
-                            <Card.Body className="text-center">
-                              {character.role}
-                            </Card.Body>
-                          </Card>
-                          <Card className="m-3">
-                            <Card.Header className="text-center">
-                              Sex
-                            </Card.Header>
-                            <Card.Body className="text-center">
-                              {character.sex}
-                            </Card.Body>
-                          </Card>
-                          <Card className="m-3">
-                            <Card.Header className="text-center">
-                              Nation
-                            </Card.Header>
-                            <Card.Body className="text-center">
-                              {character.nation}
-                            </Card.Body>
-                          </Card>
-                          <Card className="m-3">
-                            <Card.Header className="text-center">
-                              Tier
-                            </Card.Header>
-                            <Card.Body className="text-center">
-                              {character.tier}
-                            </Card.Body>
-                          </Card>
+                        <Row>
+                          <Col>
+                            <Card className="m-3">
+                              <Card.Header className="text-center">
+                                Role
+                              </Card.Header>
+                              <Card.Body className="text-center">
+                                {character.role}
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                          <Col>
+                            <Card className="m-3">
+                              <Card.Header className="text-center">
+                                Sex
+                              </Card.Header>
+                              <Card.Body className="text-center">
+                                {character.sex}
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <Card className="m-3">
+                              <Card.Header className="text-center">
+                                Nation
+                              </Card.Header>
+                              <Card.Body className="text-center">
+                                {character.nation}
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                          <Col>
+                            <Card className="m-3">
+                              <Card.Header className="text-center">
+                                Tier
+                              </Card.Header>
+                              <Card.Body className="text-center">
+                                {character.tier}
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
                           <Card className="m-3">
                             <Card.Header className="text-center">
                               Element
@@ -130,7 +143,8 @@ class ViewCharacter extends Component {
                               {character.element}
                             </Card.Body>
                           </Card>
-                        </CardColumns>
+                          </Col>
+                        </Row>
                       </Card.Body>
                     </Accordion.Collapse>
                   </Card>
