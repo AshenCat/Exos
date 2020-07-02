@@ -21,18 +21,61 @@ class ViewCharacter extends Component {
               <Row>
                 <Col sm={3} style={{}}>
                   <h2 className="text-center">{character.name}</h2>
-                  <h3 className="text-center">{character.title}</h3>
-                  <Container fluid className="force-center"><img className="f-l m-2 img-frame" src={require("../../img/" + character.tier + "/" + character.name + ".JPG")} alt={`${character.name}`}/></Container >
+                  <h4 className="text-center">{character.role}</h4>
+                  <div className="text-center">
+                    <img className="force-center m-2 img-frame" src={require("../../img/" + character.tier + "/" + character.name + ".JPG")} alt={`${character.name}`}/>
+                  </div>
                 </Col>
                 <Col>
                 <Accordion defaultActiveKey="0">
                   <Card>
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                        Bio
+                        Skills
                       </Accordion.Toggle>
                     </Card.Header>
                     <Accordion.Collapse eventKey="0">
+                      <Card.Body>
+                        <ListGroup variant="flush">
+                          <ListGroup.Item>
+                            <div className="pre-wrap-me"><b>[Passive] {character.skills.passive.name}</b></div>
+                            {character.skills.passive.description.map((skill, no) => {
+                              return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
+                            })}
+                          </ListGroup.Item>
+                          <ListGroup.Item>
+                            <div className="pre-wrap-me"><b>[Active 1] {character.skills.active1.name} - Cost: {character.skills.active1.cost}</b></div>
+                            {character.skills.active1.description.map((skill, no) => {
+                              return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
+                            })}
+                          </ListGroup.Item>
+                          <ListGroup.Item>
+                            <div className="pre-wrap-me"><b>[Active 2] {character.skills.active2.name} - Cost: {character.skills.active2.cost}</b></div>
+                            {character.skills.active2.description.map((skill, no) => {
+                              return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
+                            })}
+                          </ListGroup.Item>
+                        </ListGroup>
+                      </Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                  <Card>
+                    <Card.Header>
+                      <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                        Backstory
+                      </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="1">
+                      <Card.Body className="pre-wrap-me">{character.description}</Card.Body>
+                    </Accordion.Collapse>
+                  </Card>
+                  <Card>
+                    <Card.Header>
+                      <Accordion.Toggle as={Button} variant="link" eventKey="2">
+                        Bio
+                      </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="2">
                       <Card.Body>
                         {/*
                         name: "Garff",
@@ -89,47 +132,6 @@ class ViewCharacter extends Component {
                           </Card>
                         </CardColumns>
                       </Card.Body>
-                    </Accordion.Collapse>
-                  </Card>
-                  <Card>
-                    <Card.Header>
-                      <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                        Skills
-                      </Accordion.Toggle>
-                    </Card.Header>
-                    <Accordion.Collapse eventKey="1">
-                      <Card.Body>
-                        <ListGroup variant="flush">
-                          <ListGroup.Item>
-                            <div className="pre-wrap-me"><b>[Passive] {character.skills.passive.name}</b></div>
-                            {character.skills.passive.description.map((skill, no) => {
-                              return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
-                            })}
-                          </ListGroup.Item>
-                          <ListGroup.Item>
-                            <div className="pre-wrap-me"><b>[Active 1] {character.skills.active1.name} - Cost: {character.skills.active1.cost}</b></div>
-                            {character.skills.active1.description.map((skill, no) => {
-                              return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
-                            })}
-                          </ListGroup.Item>
-                          <ListGroup.Item>
-                            <div className="pre-wrap-me"><b>[Active 2] {character.skills.active2.name} - Cost: {character.skills.active2.cost}</b></div>
-                            {character.skills.active2.description.map((skill, no) => {
-                              return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
-                            })}
-                          </ListGroup.Item>
-                        </ListGroup>
-                      </Card.Body>
-                    </Accordion.Collapse>
-                  </Card>
-                  <Card>
-                    <Card.Header>
-                      <Accordion.Toggle as={Button} variant="link" eventKey="2">
-                        Backstory
-                      </Accordion.Toggle>
-                    </Card.Header>
-                    <Accordion.Collapse eventKey="2">
-                      <Card.Body className="pre-wrap-me">{character.description}</Card.Body>
                     </Accordion.Collapse>
                   </Card>
                 </Accordion>
