@@ -29,6 +29,10 @@ a.characters-title{
   float: left;
 }
 
+.f-r {
+  float: right;
+}
+
 .btn-twin {
   margin: 5px;
 }
