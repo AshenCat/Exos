@@ -135,14 +135,24 @@ server.route('/:username')
 
 server.route('/auth')
     .post((req,res,next) => {
-        res.json(req.user)
+        console.log(req.user)
+        if(!req.user) {
+            res.json(null)
+        }
+        else {
+            res.json({
+                username: req.user.username,
+                email: req.user.email,
+                access: req.user.access
+            })
+        }
     })
 
 server.route('/logout')
     .post((req,res,next) => {
         req.logOut();
         res.json({
-            msg: `Successfulyl logged out`,
+            msg: `Successfully logged out`,
             payload: null
         })
     })
