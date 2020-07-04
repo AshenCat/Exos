@@ -24,27 +24,21 @@ server.route('/')
         })
     })
     .put((req,res,next) =>{
+        console.log(req.body)
+        if (req.body.username.length < 6 || req.body.username.length > 16 || req.body.username !== req.body.username.trim()) {
+            //console.log("Fishyyy")
+            res.json({msg: `Validation failed...`, payload: null})
+        }
+        else if (req.body.password.length < 8 || req.body.password.length > 20 || req.body.password !== req.body.password.trim()) {
+            //console.log("Fishyy2")
+            res.json({msg: `Validation failed...`, payload: null})
+        }
+        else 
         bcrypt.genSalt(saltRounds, (err, salt) => {
-            if(err) {
-                res.status(500);
-                next(err)
-            }
-            bcrypt.hash(req.body.password, salt, (err, hash) => {
-                if(err) {
-                    res.status(500);
-                    next(err);
-                }
+            bcrypt.hash(req.body.password, salt).then((hash) => {
                 model.findOne({username: req.body.username},(err, data)=>{
-                    if (err) {
-                        res.status(500);
-                        next(err);
-                    }
                     if(!data){
                         model.findOne({email: req.body.email}, (err, data) => {
-                            if (err) {
-                                res.status(500);
-                                next(err);
-                            }
                             if(!data) {
                                 model.create({
                                     username: req.body.username,
@@ -56,27 +50,12 @@ server.route('/')
                                         res.status(500);
                                         next(err);
                                     }
-                                    else {
-                                        res.json({
-                                            msg: "User created",
-                                            payload: doc
-                                        })
-                                    }
+                                    else res.json({msg: "User created", payload: doc})
                                 })
                             }
-                            else {
-                                res.json({
-                                    msg: `Email: '${req.body.email}' is already taken`,
-                                    payload: null
-                                })
-                            }
+                            else res.json({msg: `Email: '${req.body.email}' is already taken`, payload: null})
                         })
-                    } else {
-                        res.json({
-                            msg: `Username: '${req.body.username}' is already taken`,
-                            payload: null
-                        })
-                    }
+                    } else res.json({msg: `Username: '${req.body.username}' is already taken`, payload: null})
                 })
             })
         })

@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Container, Form, Col, Button, Row, InputGroup } from 'react-bootstrap';
+import { Container, Form, Col, Button, Row, InputGroup, Modal } from 'react-bootstrap';
 
 
 
@@ -8,6 +8,9 @@ const Register = (props) => {
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [email, setEmail] = React.useState("");
+
+    const [show, setShow] = React.useState(false);
+
     //for username availability check
     const [isValid, setIsValid] = React.useState(false);
     //each form validation
@@ -24,7 +27,7 @@ const Register = (props) => {
 
         if (!validated) return
         e.preventDefault();
-        axios.put(`http://localhost:7172/api/user/`, {username, password})
+        axios.put(`http://localhost:7172/api/user/`, {username, password, email:""})
             .then((res) => {
                 console.log("Saving to the database...");
                 console.log(`User: ${username}\nPassword: ${password}\nEmail: ${email}`);
@@ -56,7 +59,7 @@ const Register = (props) => {
                                 type="text" 
                                 placeholder="Enter Username..." 
                                 onChange={ e=> {setUsername(e.target.value); setIsValid(false)}}
-                                pattern="[A-Za-z0-9].{8,15}"
+                                pattern="[A-Za-z0-9]{6,16}"
                                 required/>
                             <InputGroup.Append>
                                 <Button variant="outline-secondary" onClick={usernameCheck}>Check</Button>
@@ -72,8 +75,8 @@ const Register = (props) => {
                         <Form.Control 
                             type="password" 
                             placeholder="Enter Password..." 
-                            onChange={ e=> setPassword(e.target.password)}
-                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                            onChange={ e=> setPassword(e.target.value)}
+                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}" 
                             title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                             required/>
                     </Form.Group>
@@ -91,6 +94,10 @@ const Register = (props) => {
                     <Button className="m-4" type="submit">Submit</Button>
                 </Row>
             </Form>
+
+            <Modal>
+
+            </Modal>
         </Container>
     </> 
     );
