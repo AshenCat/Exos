@@ -35,26 +35,38 @@ server.route('/')
         }
         else 
         bcrypt.genSalt(saltRounds, (err, salt) => {
+            if (err) {
+                res.status(500);
+                next(err)
+            }
             bcrypt.hash(req.body.password, salt).then((hash) => {
+                if (err) {
+                    res.status(500);
+                    next(err)
+                }
                 model.findOne({username: req.body.username},(err, data)=>{
                     if(!data){
-                        model.findOne({email: req.body.email}, (err, data) => {
-                            if(!data) {
+                        // model.findOne({email: req.body.email}, (err, data) => {
+                        //     if(!data) {
+                                console.log(`Creating user : ${req.body.username}`)
                                 model.create({
                                     username: req.body.username,
                                     password: hash,
-                                    email: req.body.email,
+                                    // email: req.body.email,
                                     access: 'user'
                                 }).then((doc, err) =>{
                                     if (err) {
                                         res.status(500);
                                         next(err);
                                     }
-                                    else res.json({msg: "User created", payload: doc})
+                                    else res.json({msg: "User created", payload: {
+                                        username: doc.username,
+                                        // email: doc.email
+                                    }})
                                 })
-                            }
-                            else res.json({msg: `Email: '${req.body.email}' is already taken`, payload: null})
-                        })
+                            // }
+                            // else res.json({msg: `Email: '${req.body.email}' is already taken`, payload: null})
+                        // })
                     } else res.json({msg: `Username: '${req.body.username}' is already taken`, payload: null})
                 })
             })
@@ -81,6 +93,7 @@ server.route('/')
         */
        //console.log(`posted`);
        passport.authenticate("local", (err,user,info) => {
+           console.log(`Passport check user: ${user}`)
            if (err) {
                 res.status(500);
                 next(err)
@@ -116,14 +129,14 @@ server.route('/:username')
 
 server.route('/auth')
     .post((req,res,next) => {
-        console.log(req.user)
+        console.log(`Trying to authenticate: ${req.user}`)
         if(!req.user) {
             res.json(null)
         }
         else {
             res.json({
                 username: req.user.username,
-                email: req.user.email,
+                // email: req.user.email,
                 access: req.user.access
             })
         }
@@ -137,4 +150,5 @@ server.route('/logout')
             payload: null
         })
     })
+
 module.exports = server;

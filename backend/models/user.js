@@ -12,10 +12,10 @@ let userSchema = new Schema({
         type: String,
         required: true
     },
-    email: {
-        type: String,
-        unique: true
-    },
+    // email: {
+    //     type: String,
+    //     unique: true
+    // },
     access: {
         type: String,
         enum: ["admin", "user", "tech"],
