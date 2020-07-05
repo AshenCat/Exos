@@ -26,17 +26,9 @@ const Register = (props) => {
         e.preventDefault();
         const form = e.currentTarget;
         
-        // console.log("username is valid: " + isValid)
-        // console.log("space on username:" + username.includes(' '))
-        // console.log("space on password:" + password.includes(' '))
-        if (!isValid || checkForWhiteSpace(username) || checkForWhiteSpace(password)) {
-            setShow(true); 
-            // console.log("not valid yo")
-            return
-        }
-        
-        if (form.checkValidity() === false) {
+        if (form.checkValidity() === false || !isValid || checkForWhiteSpace(username) || checkForWhiteSpace(password)) {
             e.stopPropagation();
+            setShow(true); 
             return
           }
         else setValidated(true);
@@ -69,12 +61,16 @@ const Register = (props) => {
 
     const LoadingSpinner = () => {
         return !response ?
-            <div>
-                <Spinner animation="border">
+            <Container>
+                <Row>
+                <Spinner animation="border" className="force-center">
                     <span className="sr-only">Loading...</span>
                 </Spinner>
-                This should not take more than 45 seconds
-            </div>
+                </Row>
+                <Row className="text-center">
+                    <p className="text-center">This should not take more than 45 seconds</p>
+                </Row>
+            </Container>
         :
         <div className="text-center">
             <p>Successfully created account with username : {username}</p>
@@ -82,8 +78,6 @@ const Register = (props) => {
         </div>
     }
     const checkForWhiteSpace = (string) => {
-        // console.log("rex: " + string.replace(/\s+/g, '').length)
-        // console.log("reg: " + string.length)
         return !(string.length === string.replace(/\s+/g, '').length)
     }
 
@@ -138,7 +132,6 @@ const Register = (props) => {
                     </Form>
                 </Col>
                 <Col>
-                    {/* eslint-disable-next-line jsx-a11y/heading-has-content*/}
                     <Card>
                         <Card.Header>
                             <h3>Guidelines</h3>
