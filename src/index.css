@@ -52,8 +52,10 @@ a.characters-title{
 
 .green {
   color: green !important;
+  border-bottom: 1px solid green;
 }
 
 .red {
   color: red !important;
+  border-bottom: 1px solid red;
 }
