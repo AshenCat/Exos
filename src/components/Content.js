@@ -44,11 +44,12 @@ class Content extends React.Component {
                 luck: 0
             }],
             recommendations: [],
-            comments: [{
-                user: "TOP KEK",
-                comment: "kekkers bruh...",
-                timestamp: Date.now()
-            }]
+            // comments: [{
+            //     user: "TOP KEK",
+            //     comment: "kekkers bruh...",
+            //     timestamp: new Date(),
+            //     patch: "Zeon"
+            // }]
         },
         {
             _id: 2,

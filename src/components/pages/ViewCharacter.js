@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom'
-import { Card, Accordion, Button, Container, Col, Row, ListGroup } from 'react-bootstrap';
+import { Card, Accordion, Button, Container, Col, Row, ListGroup, Spinner } from 'react-bootstrap';
 
 class ViewCharacter extends Component {
     componentDidMount(){
@@ -141,7 +141,7 @@ class ViewCharacter extends Component {
                             <ListGroup>
                               {character.maxStats.map((stats, count) => {
                                 return (
-                                <ListGroup.Item>
+                                <ListGroup.Item key={count}>
                                   <h5>Level: {stats.level}</h5>
                                   <hr />
                                   <Row>
@@ -181,20 +181,51 @@ class ViewCharacter extends Component {
               </Row>
               {/* Recommendations maybe here */}
               <Row>
-                <h3 className="mt-4">Comments: </h3>
-                <div>
-                  
-                </div>
-              </Row>
-              <Row>
-                
+              {/* comments: [{
+                    user: "TOP KEK",
+                    comment: "kekkers bruh...",
+                    timestamp: Date.now(),
+                    patch: "Zeon"
+                }] */}
+                {/* <h3 className="mt-4">{character.comments === [] ? "0 Comments" : character.comments.length !== 1? `${character.comments.length} Comments` : "1 Comment"} :</h3>
+                <Container>
+                  <ListGroup>
+                    {character.comments !== [] ? 
+                    character.comments.map((comment, ctr) => { 
+                      return  <ListGroup.Item key={ctr}>
+                                <Container>
+                                <Row>
+                                  <div><img src={require("../../img/Avatar1.png")} width="75px" height="75px" alt="user avatar"/></div>
+                                  <div className="ml-4 mt-2">
+                                    <Row>{`${comment.timestamp.toString()}`}</Row>
+                                    <Row><h6 className="mr-1" style={{"marginBottom":"0px", "display":"inline", "lineHeight":"1.5"}}>{comment.user}</h6> said:  </Row>
+                                  </div>
+                                </Row>
+                                <Row>
+                                  <div style={{"marginLeft":"75px", "paddingLeft":"10px"}}>{comment.comment}</div>
+                                </Row>
+                                </Container>
+                              </ListGroup.Item>
+                    }) : <div></div>}
+                  </ListGroup>
+                </Container> */}
               </Row>
             </Container>
         )
     }
 
     render() { 
-        const selectedCharacter = this.state.name ? (<this.displayCharacter />) : (<div>loading...</div>);
+        const selectedCharacter = this.state.name ? (<this.displayCharacter />) : 
+                    <Container>
+                      <Row>
+                      <Spinner animation="border" className="force-center">
+                          <span className="sr-only">Loading...</span>
+                      </Spinner>
+                      </Row>
+                      <Row className="text-center">
+                          <p className="text-center">This should not take more than 45 seconds</p>
+                      </Row>
+                    </Container>;
         return ( 
         <div>
             { this.state.id }
