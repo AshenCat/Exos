@@ -19,6 +19,7 @@ class Content extends React.Component {
             race: "Dwarf",
             position: "Defense",
             type: "Physical",
+            title: "",
             description: "The first of the Five Greatest Generals of Saint West. While Garff was born a commoner, he was always interested in war and dreamed of becoming a general. To realize his dream, Garff studied strategies and writings of great commanders.\n\nWhen he was old enough, Garff joined the army. He earned respect through self-management and Outstanding abilities, despite his humble background. Valarr, who had taken an interest in Garff, recommended him for the knighthood.\n \nThough Garff became a knight at a relatively late age, he was able to rise to the rank of general in a short time after defeating Valarr in a jousting competition and gaining the favor of the King. After becoming a general, Garff made a name for himself from his contributions in the war against Bronn and became the First of the Five Greatest Generals.\n \nHowever, the King was killed in a revolt led by Carrie and the capital fell into the rebels. Now Garff is avoiding Valarr's pursuit and gathering forces in preparation for Rachel's return.",
             skills: {
                 passive: { name: "Protect 3", description: ["Grants Share Health to ally with the lowest maximum Health and heals their Health by 30% of the caster's current Health at the beginning of the round\nGain Mana(1 mana) if Health of the target is less than 20%\nGain(1 mana) if Health of target is more than 70%", "[Breath of Mana]\n[Over Time Effect] Front row allies permanently gain 1 mana", "[Command]\nGrants allies with lower maximum Health than self with the Comman mark and increases Defense/Health by 20%"]},
@@ -42,7 +43,12 @@ class Content extends React.Component {
                 blockDefenceRate: 50,
                 luck: 0
             }],
-            trivias: []
+            recommendations: [],
+            comments: [{
+                user: "TOP KEK",
+                comment: "kekkers bruh...",
+                timestamp: Date.now()
+            }]
         },
         {
             _id: 2,
