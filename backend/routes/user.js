@@ -5,6 +5,7 @@ const server = express.Router();
 const passport = require("passport");
 
 const model = require('../models/user');
+const reservedUsernames = require('../config/reservedWords')
 
 // don't forget to 
 server.route('/')
@@ -24,8 +25,9 @@ server.route('/')
         })
     })
     .put((req,res,next) =>{
-        console.log(req.body)
-        if (req.body.username.length < 6 || req.body.username.length > 16 || req.body.username !== req.body.username.trim()) {
+        if(reservedUsernames.indexOf(req.body.username) > -1) 
+            res.json({msg: `Validation failed...`, payload: null})
+        else if (req.body.username.length < 6 || req.body.username.length > 16 || req.body.username !== req.body.username.trim()) {
             //console.log("Fishyyy")
             res.json({msg: `Validation failed...`, payload: null})
         }
