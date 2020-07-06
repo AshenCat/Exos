@@ -25,7 +25,7 @@ server.route('/')
         })
     })
     .put((req,res,next) =>{
-        if(reservedUsernames.indexOf(req.body.username) > -1) 
+        if(reservedUsernames.indexOf(req.body.username.toLowerCase()) > -1) 
             res.json({msg: `Validation failed...`, payload: null})
         else if (req.body.username.length < 6 || req.body.username.length > 16 || req.body.username !== req.body.username.trim()) {
             //console.log("Fishyyy")
@@ -47,6 +47,10 @@ server.route('/')
                     next(err)
                 }
                 model.findOne({username: req.body.username},(err, data)=>{
+                    if (err) {
+                        res.status(500);
+                        next(err)
+                    }
                     if(!data){
                         // model.findOne({email: req.body.email}, (err, data) => {
                         //     if(!data) {
@@ -96,7 +100,7 @@ server.route('/')
        //console.log(`posted`);
        passport.authenticate("local", (err,user,info) => {
            console.log(`Passport check user: ${user}`)
-           if (err) {
+            if (err) {
                 res.status(500);
                 next(err)
             }
@@ -122,7 +126,7 @@ server.route('/:username')
                 next(err)
             }
             //console.log(data)
-            res.json({
+            else res.json({
                 msg: !data ? `User: '${req.params.username}' not found` : "User found",
                 payload: req.user ? req.user.access === 'admin' ? data : data.username : data ? data.username : data
             })
