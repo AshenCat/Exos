@@ -10,7 +10,7 @@ const session = require('express-session');
 const fs = require('fs');
 const path = require('path');
 const modelRoute = require('./routes/user');
-const config = require('./config/dbconf');
+const config = require('./config/conf');
 
 const port = 7172;
 
@@ -32,11 +32,11 @@ app.use(cors({
     credentials: true
 }));
 app.use(session({
-    secret: "weebiesInTheHaus",
+    secret: config.secret,
     resave: true,
     saveUninitialized: true
 }))
-app.use(cookieParser("weebiesInTheHaus"))
+app.use(cookieParser(config.secret))
 app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passportConfig')(passport);
