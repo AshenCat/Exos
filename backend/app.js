@@ -15,7 +15,7 @@ const config = require('./config/conf');
 const port = 7172;
 
 mongoose.set('useCreateIndex', true);
-mongoose.connect(config.local, {useNewUrlParser: true, useUnifiedTopology: true}).then(
+mongoose.connect(config.db, {useNewUrlParser: true, useUnifiedTopology: true}).then(
     ()=>console.log(`Successfully connected to the database locally`), err => 
     console.log(`Failed to connect: ${err}`)
 )
@@ -28,7 +28,7 @@ let wstream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: '
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: config.origin,
     credentials: true
 }));
 app.use(session({

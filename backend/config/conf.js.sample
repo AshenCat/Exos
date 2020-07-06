@@ -1,0 +1,6 @@
+const local = "mongodb://localhost:27017/exos"
+//const cloud = ""
+const secret = "weebiesInTheHaus"
+const origin = "http://localhost:3000"
+
+module.exports = {db: local, secret, origin}
