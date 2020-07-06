@@ -59,3 +59,9 @@ a.characters-title{
   color: red !important;
   border-bottom: 1px solid red;
 }
+
+@media only screen and (max-width: 575px) {
+  .no-show-wen-smol-pls {
+    display: none !important;
+  }
+}
