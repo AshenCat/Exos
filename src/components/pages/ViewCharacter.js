@@ -13,13 +13,17 @@ class ViewCharacter extends Component {
         name: null,
         character: {}
     }
+
+    backOnClick = () => {
+      this.props.history.goBack();
+    }
     
     displayCharacter = () => {
         const character = this.props.character;
         return(
             <Container className="mt-4">
               <Row className="flex-row-reverse">
-                <div></div><Button className="mr-4 mb-3" size="lg" variant="outline-secondary">Back</Button>
+                <div></div><Button className="mr-4 mb-3" size="lg" variant="outline-secondary" onClick={this.backOnClick}>Back</Button>
               </Row>
               <Row>
                 <Col sm={3} style={{}}>
@@ -228,7 +232,6 @@ class ViewCharacter extends Component {
                     </Container>;
         return ( 
         <div>
-            { this.state.id }
             {selectedCharacter}
         </div>
         );
