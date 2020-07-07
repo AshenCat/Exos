@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Characters from './pages/Characters';
 import ViewCharacter from './pages/ViewCharacter';
 import Register from './pages/Register';
+import CharacterForm from './pages/CharacterForm';
 
 class Content extends React.Component {
     state = { 
@@ -132,7 +133,8 @@ class Content extends React.Component {
     <div style={{/*backgroundColor: "blue"*/}}> 
         <Route exact path='/' component={Home} />
         <Route exact path='/Characters' component={()=> <Characters characters={this.state.characters}/>} />
-        <Route path='/Characters/:name' component={()=> <ViewCharacter character={this.state.characters[0]}/>} />
+        <Route path='/Characters/Add' component={()=> <CharacterForm />} />
+        <Route exact path='/Characters/View/:name' component={()=> <ViewCharacter character={this.state.characters[0]}/>} />
         <Route path='/Register' component={Register} />
     </div> 
      );
