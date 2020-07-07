@@ -10,7 +10,7 @@ const Characters = (props) => {
         characters.map(character => {
             return (
                 <Card key={character._id} className="p-2 m-2">
-                    <Link to={`/Characters/${character.name}`} className="characters-title">
+                    <Link to={`/Characters/View/${character.name}`} className="characters-title">
                         <Card.Title className="text-center">{character.name}</Card.Title>
                         <Card.Img className="img-frame" variant="top" draggable="false" src={require("../../img/" + character.tier + "/" + character.name + ".JPG")} alt={character.name}/>
                     </Link>
