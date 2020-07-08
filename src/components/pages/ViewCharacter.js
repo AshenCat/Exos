@@ -28,7 +28,7 @@ class ViewCharacter extends Component {
               <Row>
                 <Col sm={3} style={{}}>
                   <h2 className="text-center">{character.name}</h2>
-                  <h4 className="text-center">{character.role}</h4>
+                  <h4 className="text-center">{character.element}</h4>
                   <div className="text-center">
                     <img className="force-center m-2 img-frame" src={require("../../img/" + character.tier + "/" + character.name + ".JPG")} alt={`${character.name}`}/>
                   </div>
