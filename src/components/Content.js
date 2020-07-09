@@ -42,7 +42,6 @@ class Content extends React.Component {
                 blockDefenceRate: 50,
                 luck: 0
             }],
-            recommendations: [],
             // comments: [{
             //     user: "TOP KEK",
             //     comment: "kekkers bruh...",
