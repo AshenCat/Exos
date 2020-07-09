@@ -9,7 +9,8 @@ const passport = require("passport");
 const session = require('express-session');
 const fs = require('fs');
 const path = require('path');
-const modelRoute = require('./routes/user');
+const userRoute = require('./routes/user');
+const characterRoute = require('./routes/character');
 const config = require('./config/conf');
 
 const port = 7172;
@@ -46,7 +47,8 @@ app.use(helmet());
 
 
 //Routes section
-app.use('/api/user', modelRoute);
+app.use('/api/user', userRoute);
+app.use('/api/character', characterRoute);
 
 app.use((req,res)=> {
     if(res.statusCode === 200) res.status(404)
