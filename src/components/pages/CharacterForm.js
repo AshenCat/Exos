@@ -197,7 +197,7 @@ const CharacterForm = (props) => {
         
     const backOnClick = () => {
       // console.log(character)
-      this.props.history.goBack();
+      props.history.goBack();
     }
 
     const submit = (e) => {
@@ -253,7 +253,7 @@ const CharacterForm = (props) => {
                     <option value="common">Common</option>
                   </Form.Control>
                   <div className="text-center">
-                    <img className="force-center m-2 img-frame" src={require("../../img/Generic.JPG")} alt={`${character.name}`}/>
+                    <img className="force-center m-2 img-frame" src={require("./img/Generic.JPG")} alt={`${character.name}`}/>
                   </div>
                   <div className="text-center"><Button type="submit">Submit</Button></div>
                 </Col>
