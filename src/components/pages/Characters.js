@@ -2,20 +2,32 @@ import React from 'react';
 import {withRouter, Link} from 'react-router-dom';
 import {Card, Row} from 'react-bootstrap';
 import { UserContext } from '../../App';
+import axios from 'axios'
 
 const Characters = (props) => {
-    //console.log(props) //withRouter
-    
     const user = React.useContext(UserContext);
-    const {characters} = props;
-    // console.log(user)
+    const [characters, setCharacters] = React.useState([]);
+
+    React.useEffect(() => {
+        axios.get('http://localhost:7172/api/character/').then((res) =>{
+            console.log(res.data.payload)
+            setCharacters(res.data.payload)
+        }).catch((err)=> console.log(err))
+    }, [])
+
     const characterList = characters.length ? (
         characters.map(character => {
+            let image = null;
+            try {
+                image = require("./img/" + character.tier + "/" + character.name + ".JPG");
+            } catch {
+                image = require("./img/Generic.JPG");
+            }
             return (
                 <Card key={character._id} className="p-2 m-2">
-                    <Link to={`/Characters/View/${character.name}`} className="characters-title">
+                    <Link to={`/Characters/View/${character.tier}/${character.name}`} className="characters-title">
                         <Card.Title className="text-center">{character.name}</Card.Title>
-                        <Card.Img className="img-frame" variant="top" draggable="false" src={require("../../img/" + character.tier + "/" + character.name + ".JPG")} alt={character.name}/>
+                        <Card.Img className="img-frame" variant="top" draggable="false" src={image} alt={character.name}/>
                     </Link>
                     <Card.Body>
                         <div className="text-center">
