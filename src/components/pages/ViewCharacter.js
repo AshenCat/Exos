@@ -4,7 +4,7 @@ import { Card, Accordion, Button, Container, Col, Row, ListGroup, Spinner } from
 
 class ViewCharacter extends Component {
     componentDidMount(){
-        console.log(this.props)
+        // console.log(this.props)
         let name = this.props.match.params.name;
         this.setState({name})
     }
@@ -27,6 +27,7 @@ class ViewCharacter extends Component {
               </Row>
               <Row>
                 <Col sm={3} style={{}}>
+                  <h4 className="text-center">{character.title}</h4>
                   <h2 className="text-center">{character.name}</h2>
                   <h4 className="text-center">{character.element}</h4>
                   <div className="text-center">
@@ -112,7 +113,6 @@ class ViewCharacter extends Component {
                         </Row>
                         <Row>
                           <Col md>Type: &nbsp;&nbsp;&nbsp;&nbsp;{character.type}</Col>
-                          <Col md>Title: &nbsp;&nbsp;&nbsp;&nbsp;{character.title}</Col>
                         </Row>
                       </Card.Body>
                     </Accordion.Collapse>
