@@ -15,7 +15,7 @@ const Home = (props) => {
                   e.preventDefault();
                   axios.post('http://localhost:7172/api/user/auth',{}, {withCredentials: true})
                     .then(res => {
-                        console.log(res)
+                        // console.log(res)
                         setData(res.data)
                     })  
                 }
