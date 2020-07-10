@@ -2,10 +2,16 @@ import React from 'react';
 import axios from 'axios';
 import { Container, Form, Col, Button, Row, InputGroup, Modal, Card, Spinner } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
-
+import { UserContext } from '../../App';
 
 
 const Register = (props) => {
+    const user = React.useContext(UserContext);
+
+    React.useEffect(()=>{
+        if(user) props.history.push('/') 
+    }, [user, props])
+
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [email, setEmail] = React.useState("");
