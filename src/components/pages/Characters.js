@@ -1,11 +1,14 @@
 import React from 'react';
 import {withRouter, Link} from 'react-router-dom';
-import {Card} from 'react-bootstrap';
+import {Card, Row} from 'react-bootstrap';
+import { UserContext } from '../../App';
 
 const Characters = (props) => {
     //console.log(props) //withRouter
-    const {characters} = props
-    console.log(characters)
+    
+    const user = React.useContext(UserContext);
+    const {characters} = props;
+    // console.log(user)
     const characterList = characters.length ? (
         characters.map(character => {
             return (
@@ -40,6 +43,7 @@ const Characters = (props) => {
     <React.Fragment>
         <h1 className="text-center">Characters</h1>
         <hr className="shine" />
+        {user ? user.access.toLowerCase() === "admin" ? <Row className="justify-content-center"><div></div><Link to="/Characters/Add" className="btn btn-outline-secondary">Add character</Link></Row> : null : null}
         <div className="d-flex justify-content-center">
             {characterList}
         </div>
