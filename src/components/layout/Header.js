@@ -64,7 +64,7 @@ const Header = (props) => {
               <NavDropdown.Divider />
               <Link className="dropdown-item" to="/Rerolling">Rerolling</Link>
             </NavDropdown>
-            <Link className="nav-link" to="/Register">Register</Link>
+            {!props.session ? <Link className="nav-link" to="/Register">Register</Link> : null}
           </Nav>
           <Nav>
             {!props.session ? 
