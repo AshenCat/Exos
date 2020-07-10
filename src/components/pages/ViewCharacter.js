@@ -2,16 +2,23 @@ import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom'
 import { Card, Accordion, Button, Container, Col, Row, ListGroup, Spinner } from 'react-bootstrap';
 import { UserContext } from '../../App'
+import axios from 'axios'
 class ViewCharacter extends Component {
     componentDidMount(){
         // console.log(this.props)
         let name = this.props.match.params.name;
+        let tier = this.props.match.params.tier;
         this.setState({name})
+        console.log(tier + " " + name)
+        axios.get("http://localhost:7172/api/character/" + tier + "/" + name).then(res => {
+          this.setState({didRespond: true, character: res.data.payload});
+        }).catch(err=>console.log(err))
     }
 
     state = { 
         name: null,
-        character: {}
+        character: null,
+        didRespond: false
     }
 
     backOnClick = () => {
@@ -20,8 +27,15 @@ class ViewCharacter extends Component {
     
     displayCharacter = () => {
       const user = React.useContext(UserContext)
-      const character = this.props.character;
-      return(
+      const character = this.state.character;
+      if (character){
+        let image = null;
+            try {
+                image = require("./img/" + character.tier + "/" + character.name + ".JPG");
+            } catch {
+                image = require("./img/Generic.JPG");
+            }
+        return(
             <Container className="mt-4">
               <Row className="flex-row-reverse">
                 <Button className="mr-4 mb-3" size="lg" variant="outline-secondary" onClick={this.backOnClick}>Back</Button>{user && user.access.toLowerCase() === "admin" ? <Button className="mr-4 mb-3" size="lg" variant="outline-info">Edit</Button> : <div></div>}
@@ -32,7 +46,7 @@ class ViewCharacter extends Component {
                   <h2 className="text-center">{character.name}</h2>
                   <h4 className="text-center">{character.element}</h4>
                   <div className="text-center">
-                    <img className="force-center m-2 img-frame" src={require("../../img/" + character.tier + "/" + character.name + ".JPG")} alt={`${character.name}`}/>
+                    <img className="force-center m-2 img-frame" src={image} alt={`${character.name}`}/>
                   </div>
                 </Col>
                 <Col>
@@ -217,6 +231,7 @@ class ViewCharacter extends Component {
               </Row>
             </Container>
         )
+      } else return null
     }
 
     render() { 
