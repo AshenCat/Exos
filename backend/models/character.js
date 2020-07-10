@@ -1,11 +1,13 @@
-let mongoose = require('mongoose')
+const mongoose = require('mongoose')
+
+const Schema = mongoose.Schema;
 
 let reqString = {
     type: String,
     required: true
 }
 
-let characterModel = mongoose.Schema({
+let characterSchema = new Schema({
     name: reqString,
     role: reqString,
     sex: String,
@@ -44,4 +46,4 @@ let characterModel = mongoose.Schema({
     }]
 }, {timestamps: true})
 
-module.exports = characterModel;
+module.exports = mongoose.model("Characters", characterSchema);
