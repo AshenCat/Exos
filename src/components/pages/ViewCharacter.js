@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom'
 import { Card, Accordion, Button, Container, Col, Row, ListGroup, Spinner } from 'react-bootstrap';
-
+import { UserContext } from '../../App'
 class ViewCharacter extends Component {
     componentDidMount(){
         // console.log(this.props)
@@ -19,11 +19,12 @@ class ViewCharacter extends Component {
     }
     
     displayCharacter = () => {
-        const character = this.props.character;
-        return(
+      const user = React.useContext(UserContext)
+      const character = this.props.character;
+      return(
             <Container className="mt-4">
               <Row className="flex-row-reverse">
-                <div></div><Button className="mr-4 mb-3" size="lg" variant="outline-secondary" onClick={this.backOnClick}>Back</Button>
+                <Button className="mr-4 mb-3" size="lg" variant="outline-secondary" onClick={this.backOnClick}>Back</Button>{user && user.access.toLowerCase() === "admin" ? <Button className="mr-4 mb-3" size="lg" variant="outline-info">Edit</Button> : <div></div>}
               </Row>
               <Row>
                 <Col sm={3} style={{}}>
