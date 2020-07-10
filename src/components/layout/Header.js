@@ -3,9 +3,8 @@ import axios from 'axios';
 import { Navbar, Nav, NavDropdown, Form, InputGroup, Col, Button } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
-const Header = () => {
-  
-  const [session, setSession] = React.useState(null)
+const Header = (props) => {
+
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -13,11 +12,11 @@ const Header = () => {
     e.preventDefault();
     axios.post('http://localhost:7172/api/user/logout', {}, {withCredentials: true})
       .then((res) => {
-        setUsername(null);
-        setPassword(null);
-        console.log(`logout:`)
-        console.log(res.data)
-        setSession(null);
+        setUsername("");
+        setPassword("");
+        // console.log(`logout:`)
+        // console.log(res.data)
+        props.setSession(null);
       })
   }
 
@@ -29,25 +28,25 @@ const Header = () => {
     e.preventDefault();
     axios.post('http://localhost:7172/api/user', {username, password}, {withCredentials: true})
       .then((res) => {
-        console.log(`Login:`)
-        console.log(res.data.payload)
-        if(res.data.payload) setSession(res.data.payload)
+        // console.log(`Login:`)
+        // console.log(res.data.payload)
+        if(res.data.payload) props.setSession(res.data.payload)
       })
       .catch(err=>{
         console.log(`Error 🐱‍👤 : ${err}`)
       })
   }
 
-  React.useEffect(() => {
-    axios.post('http://localhost:7172/api/user/auth',{}, {withCredentials: true})
-      .then(res => {
-          if(!session) {
-            console.log("useEffect on header : ")
-            console.log(res.data)
-            setSession(res.data)
-          }
-      })
-  }, [session])
+  // React.useEffect(() => {
+  //   axios.post('http://localhost:7172/api/user/auth',{}, {withCredentials: true})
+  //     .then(res => {
+  //         if(!props.session) {
+  //           console.log("useEffect on header : ")
+  //           console.log(res.data)
+  //           props.setSession(res.data)
+  //         }
+  //     })
+  // }, [props.session])
 
   return ( 
     <React.Fragment>
@@ -68,7 +67,7 @@ const Header = () => {
             <Link className="nav-link" to="/Register">Register</Link>
           </Nav>
           <Nav>
-            {!session ? 
+            {!props.session ? 
             <Form inline>
               <Form.Row className="align-items-center">
                 <Col>
@@ -93,8 +92,8 @@ const Header = () => {
             </Form>
             :
             
-              <NavDropdown alignRight title={`Hi, ${session.username}`} id="collasible-nav-dropdown">
-                <Link className="dropdown-item" to={`/Profile/${session.username}`}>Profile</Link>
+              <NavDropdown alignRight title={`Hi, ${props.session.username}`} id="collasible-nav-dropdown">
+                <Link className="dropdown-item" to={`/Profile/${props.session.username}`}>Profile</Link>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
               </NavDropdown>}
