@@ -125,9 +125,9 @@ class Content extends React.Component {
     return ( 
     <div style={{/*backgroundColor: "blue"*/}}> 
         <Route exact path='/' component={Home} />
-        <Route exact path='/Characters' component={()=> <Characters characters={this.state.characters}/>} />
-        <Route path='/Characters/Add' component={()=> <CharacterForm />} />
-        <Route exact path='/Characters/View/:name' component={()=> <ViewCharacter character={this.state.characters[0]}/>} />
+        <Route exact path='/Characters' component={Characters} />
+        <Route path='/Characters/Add' component={CharacterForm} />
+        <Route exact path='/Characters/View/:tier/:name' component={ViewCharacter} />
         <Route path='/Register' component={Register} />
     </div> 
      );
