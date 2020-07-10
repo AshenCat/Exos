@@ -36,12 +36,12 @@ const Register = (props) => {
         console.log(email)
         axios.put(`http://localhost:7172/api/user/`, {username, password})
             .then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 if(res.data.payload.username !== null) {
                     setTimeout(()=>{
                         setResponse(true);
-                        console.log("Saving to the database...");
-                        console.log(`User: ${res.data.payload.username}\nEmail: ${res.data.payload.email}`);
+                        // console.log("Saving to the database...");
+                        // console.log(`User: ${res.data.payload.username}\nEmail: ${res.data.payload.email}`);
                     }, 1000)
                 }
             });
@@ -51,8 +51,8 @@ const Register = (props) => {
         if (username.length < 7) return;
         axios.get(`http://localhost:7172/api/user/${username}`)
             .then((res)=>{
-                console.log("Checking if user is valid...");
-                console.log(res.data);
+                // console.log("Checking if user is valid...");
+                // console.log(res.data);
                 if (res.data.payload === null) {
                     setIsValid(true)
                 }
