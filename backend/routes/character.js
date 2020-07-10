@@ -46,9 +46,32 @@ server.route('/')
                 })
             })
         }
+    });
+
+server.route('/:tier/:name')
+    .get((req, res, next) => {
+        const tier = req.params.tier;
+        const name = req.params.name;
+        if(tier && name) 
+            model.findOne({tier, name}, (err, doc) => {
+                if(err) {
+                    res.status(200);
+                    next(err);
+                }
+                else if (doc) {
+                    res.json({
+                        msg: `${doc.tier} - ${doc.name} is found`,
+                        payload: doc
+                    })
+                } else {
+                    res.json({
+                        msg: `${doc.tier} - ${doc.name} is found`,
+                        payload: null
+                    })
+                }
+            })
+        else res.send("no data")
     })
-
-
 
 
 module.exports = server;
