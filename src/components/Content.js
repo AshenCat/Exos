@@ -127,6 +127,7 @@ class Content extends React.Component {
         <Route exact path='/' component={Home} />
         <Route exact path='/Characters' component={Characters} />
         <Route path='/Characters/Add' component={CharacterForm} />
+        <Route path='/Characters/Edit/:tier/:name' component={CharacterForm} />
         <Route exact path='/Characters/View/:tier/:name' component={ViewCharacter} />
         <Route path='/Register' component={Register} />
     </div> 
