@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Navbar, Nav, NavDropdown, Form, InputGroup, Col, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Form, InputGroup, Col, Button, Spinner } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import DarkModeToggle from '../helper/DarkModeToggle'
 
@@ -8,6 +8,8 @@ const Header = (props) => {
 
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
 
   const logout = (e) => {
     e.preventDefault();
@@ -27,14 +29,21 @@ const Header = (props) => {
 
   const submit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true)
     axios.post('http://localhost:7172/api/user', {username, password}, {withCredentials: true})
       .then((res) => {
         // console.log(`Login:`)
         // console.log(res.data.payload)
-        if(res.data.payload) props.setSession(res.data.payload)
+        if(res.data.payload) setTimeout(() => {
+          props.setSession(res.data.payload)
+          setIsSubmitting(false)
+        }, 500)
       })
       .catch(err=>{
         console.log(`Error 🐱‍👤 : ${err}`)
+        setTimeout(() => {
+          setIsSubmitting(false)
+        }, 500)
       })
   }
 
@@ -79,18 +88,32 @@ const Header = (props) => {
                       <InputGroup.Prepend>
                         <InputGroup.Text>@</InputGroup.Text>
                       </InputGroup.Prepend>
-                      <Form.Control placeholder="Username here..." onChange={e => setUsername(e.target.value)} onKeyDown={submitOnEnter}/>
+                      <Form.Control 
+                      disabled={isSubmitting} 
+                      placeholder="Username here..." 
+                      onChange={e => setUsername(e.target.value)} 
+                      onKeyDown={submitOnEnter}/>
                     </InputGroup>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="formPassord">
                     <Form.Label srOnly>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password here..." onChange={e => setPassword(e.target.value)} onKeyDown={submitOnEnter}/>
+                    <Form.Control 
+                      type="password" 
+                      placeholder="Password here..." 
+                      disabled={isSubmitting} 
+                      onChange={e => setPassword(e.target.value)} 
+                      onKeyDown={submitOnEnter}/>
                   </Form.Group>
                 </Col>
               </Form.Row>
-              <Button variant="outline-primary" onClick={submit}>Login</Button>
+              <Button variant="outline-primary" onClick={submit}>
+                {isSubmitting ? 
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner> : "Login"}
+                </Button>
             </Form>
             :
             
