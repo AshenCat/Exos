@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Card, Accordion, Button, Container, Col, Row, ListGroup, Form, InputGroup, Modal, Spinner } from 'react-bootstrap';
-import Axios from 'axios';
+import axios from 'axios';
 import { UserContext } from '../../App';
 
 // characters: [{
@@ -46,54 +46,60 @@ import { UserContext } from '../../App';
 const CharacterForm = (props) => {
 
   const user = React.useContext(UserContext);
+
+  const [character, setCharacter] = React.useState({
+                _id: null,
+                name: "",
+                role: "",
+                sex: "",
+                nation: "",
+                tier: "",
+                element: "",
+                age: "",
+                race: "",
+                position: "",
+                type: "",
+                title: "",
+                description: "",
+                skills: {
+                    passive: { name: "", description: []},
+                    active1: { name: "", cost: "", description: []},
+                    active2: { name: "", cost: "", description: []}
+                },
+                maxStats: [
+                //   {
+                //     level: null,
+                //     power: null,
+                //     HP: null,
+                //     attack: null,
+                //     defense: null,
+                //     hit: null,
+                //     dodge: null,
+                //     criticalHit: null,
+                //     block: null,
+                //     attackSpeed: null,
+                //     criticalDamage: null,
+                //     blockDefenceRate: null,
+                //     luck: null
+                // }
+              ],
+            })
+
   React.useEffect(() => {
     if ((user && user.access.toLowerCase() === "user") || user === null) {
       props.history.push('/Characters')
     }
   }, [user, props])
 
-  // React.useEffect(() => {
-  //   if()
-  // }, [])
+  React.useEffect(() => {
+    if(props.match.params.name && props.match.params.tier){
+      axios.get("http://localhost:7172/api/character/" + props.match.params.tier + "/" + props.match.params.name).then(res=>{
+        if(res.data.payload) setCharacter(res.data.payload)
+      })
+    }
+  }, [props.match.params])
   
-  const [character, setCharacter] = React.useState(props.character ? 
-      props.character : {
-                  _id: null,
-                  name: "",
-                  role: "",
-                  sex: "",
-                  nation: "",
-                  tier: "",
-                  element: "",
-                  age: "",
-                  race: "",
-                  position: "",
-                  type: "",
-                  title: "",
-                  description: "",
-                  skills: {
-                      passive: { name: "", description: []},
-                      active1: { name: "", cost: "", description: []},
-                      active2: { name: "", cost: "", description: []}
-                  },
-                  maxStats: [
-                  //   {
-                  //     level: null,
-                  //     power: null,
-                  //     HP: null,
-                  //     attack: null,
-                  //     defense: null,
-                  //     hit: null,
-                  //     dodge: null,
-                  //     criticalHit: null,
-                  //     block: null,
-                  //     attackSpeed: null,
-                  //     criticalDamage: null,
-                  //     blockDefenceRate: null,
-                  //     luck: null
-                  // }
-                ],
-              })
+
 
     const [show, setShow] = React.useState(false)
     const [didRespond, setDidRespond] = React.useState(null)
@@ -207,12 +213,28 @@ const CharacterForm = (props) => {
     const submit = (e) => {
       e.preventDefault()
       setShow(true)
-      Axios.put('http://localhost:7172/api/character/', character).then((res)=>{
+      if(!character._id) 
+        axios.put('http://localhost:7172/api/character/', character, {withCredentials: true}).then((res)=>{
         setTimeout(()=>{
           // console.log(res.data)
           setDidRespond(res.data)
         }, 1000);
       })
+      else {
+        axios.patch('http://localhost:7172/api/character/', character, {withCredentials: true}).then((res)=>{
+        setTimeout(()=>{
+          // console.log(res.data)
+          setDidRespond(res.data)
+        }, 1000);
+      })
+      }
+    }
+    
+    let image = null;
+    try {
+      image = require(`./img/${character.tier}/${character.name}.JPG`)
+    } catch {
+      image = require("./img/Generic.JPG")
     }
     
     return ( 
@@ -223,7 +245,7 @@ const CharacterForm = (props) => {
                 <div></div><Button className="mr-4 mb-3" size="lg" variant="outline-secondary" onClick={backOnClick}>Back</Button>
               </Row>
               <Row>
-                <Col sm={3} style={{}}>
+                <Col md={3} style={{}}>
                   <h4 className="text-center">{character.title}</h4>
                   <h2 className="text-center">{character.name}</h2>
                   <InputGroup>
@@ -241,7 +263,7 @@ const CharacterForm = (props) => {
                     <option value="light">Light</option>
                     <option value="dark">Dark</option>
                     <option value="fire">Fire</option>
-                    <option value="ice">Ice</option>
+                    <option value="frost">Frost</option>
                     <option value="nature">Nature</option>
                     <option value="machine">Machine</option>
                   </Form.Control>
@@ -259,15 +281,15 @@ const CharacterForm = (props) => {
                     <option value="common">Common</option>
                   </Form.Control>
                   <div className="text-center">
-                    <img className="force-center m-2 img-frame" src={require("./img/Generic.JPG")} alt={`${character.name}`}/>
+                    <img className="force-center m-2 img-frame" src={image} alt={`${character.name}`}/>
                   </div>
-                  <div className="text-center"><Button type="submit">Submit</Button></div>
+                  <div className="text-center mb-3"><Button type="submit">Submit</Button></div>
                 </Col>
                 <Col>
                 
                 <Row>
                   <Accordion defaultActiveKey="0" style={{"width": "100%"}}>
-                  <Card>
+                  <Card className="dark-mode-2">
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey="0">
                         Skills
@@ -276,7 +298,7 @@ const CharacterForm = (props) => {
                     <Accordion.Collapse eventKey="0">
                       <Card.Body>
                         <ListGroup variant="flush">
-                          <ListGroup.Item>
+                          <ListGroup.Item className="dark-mode-2">
                             <div className="pre-wrap-me"><b>[Passive] {character.skills.passive.name}</b></div>
                             {character.skills.passive.description.map((skill, no) => {
                               return <div className="pre-wrap-me" key={no}>
@@ -295,7 +317,7 @@ const CharacterForm = (props) => {
                               <InputGroup.Append><Button variant="outline-secondary" id="passiveDescription" onClick={(e)=>manageSkills(e)}>Add</Button></InputGroup.Append>
                             </InputGroup>
                           </ListGroup.Item>
-                          <ListGroup.Item>
+                          <ListGroup.Item className="dark-mode-2">
                             <div className="pre-wrap-me"><b>[Active 1] {character.skills.active1.name} - Cost: {character.skills.active1.cost}</b></div>
                             {character.skills.active1.description.map((skill, no) => {
                               return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
@@ -319,7 +341,7 @@ const CharacterForm = (props) => {
                               <InputGroup.Append><Button variant="outline-secondary" id="active1Description" onClick={(e)=>manageSkills(e)}>Add</Button></InputGroup.Append>
                             </InputGroup>
                           </ListGroup.Item>
-                          <ListGroup.Item>
+                          <ListGroup.Item className="dark-mode-2">
                             <div className="pre-wrap-me"><b>[Active 2] {character.skills.active2.name} - Cost: {character.skills.active2.cost}</b></div>
                             {character.skills.active2.description.map((skill, no) => {
                               return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
@@ -349,7 +371,7 @@ const CharacterForm = (props) => {
                       </Card.Body>
                     </Accordion.Collapse>
                   </Card>
-                  <Card>
+                  <Card className="dark-mode-2">
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey="1">
                         Backstory
@@ -367,7 +389,7 @@ const CharacterForm = (props) => {
                       </Card.Body>
                     </Accordion.Collapse>
                   </Card>
-                  <Card>
+                  <Card className="dark-mode-2">
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey="2">
                         Other info
@@ -439,7 +461,7 @@ const CharacterForm = (props) => {
                       </Card.Body>
                     </Accordion.Collapse>
                   </Card>
-                  <Card>
+                  <Card className="dark-mode-2">
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey="4">
                         Stats
@@ -467,7 +489,7 @@ const CharacterForm = (props) => {
                             <ListGroup>
                               {character.maxStats.map((stats, count) => {
                                 return (
-                                <ListGroup.Item key={count}>
+                                <ListGroup.Item key={count} className="dark-mode-2">
                                   <h5>Level: {stats.level}</h5>
                                   <hr />
                                   <Row>
@@ -538,7 +560,7 @@ const CharacterForm = (props) => {
           </Form>
             <Modal show={show} onHide={()=>{setShow(false); setDidRespond(null)}}>
               <Modal.Header closeButton>
-                  <Modal.Title>{didRespond ? "Server responded" : "Loading"}</Modal.Title>
+                  <Modal.Title>{didRespond ? character._id? "PATCH: Server responded" : "PUT: Server responded" : "Loading"}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                   {didRespond ? didRespond.payload ? `${didRespond.msg} named ${didRespond.payload}` : `${didRespond.msg}` : 
