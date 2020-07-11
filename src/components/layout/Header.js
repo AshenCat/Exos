@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Navbar, Nav, NavDropdown, Form, InputGroup, Col, Button } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import DarkModeToggle from '../helper/DarkModeToggle'
 
 const Header = (props) => {
 
@@ -51,7 +52,7 @@ const Header = (props) => {
   return ( 
     <React.Fragment>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Link  className="navbar-brand" to="/">Exos Heroes Hub</Link>
+        <Link  className="navbar-brand" to="/">Exos Hub</Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
@@ -65,6 +66,7 @@ const Header = (props) => {
               <Link className="dropdown-item" to="/Rerolling">Rerolling</Link>
             </NavDropdown>
             {!props.session ? <Link className="nav-link" to="/Register">Register</Link> : null}
+            <DarkModeToggle />
           </Nav>
           <Nav>
             {!props.session ? 
