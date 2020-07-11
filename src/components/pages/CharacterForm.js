@@ -281,7 +281,7 @@ const CharacterForm = (props) => {
                     <option value="common">Common</option>
                   </Form.Control>
                   <div className="text-center">
-                    <img className="force-center m-2 img-frame" src={image} alt={`${character.name}`}/>
+                    <img className="force-center m-2 img-frame" draggable="false" src={image} alt={`${character.name}`}/>
                   </div>
                   <div className="text-center mb-3"><Button type="submit">Submit</Button></div>
                 </Col>

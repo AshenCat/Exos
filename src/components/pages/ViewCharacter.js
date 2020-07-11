@@ -97,7 +97,7 @@ class ViewCharacter extends Component {
                   <h4 className="text-center">{element}</h4>
                   <h5 className="text-center">{tier}</h5>
                   <div className="text-center">
-                    <img className="force-center m-2 img-frame" src={image} alt={`${character.name}`}/>
+                    <img className="force-center m-2 img-frame" draggable="false" src={image} alt={`${character.name}`}/>
                   </div>
                 </Col>
                 <Col>
