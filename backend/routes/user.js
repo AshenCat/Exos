@@ -46,7 +46,7 @@ server.route('/')
                     res.status(500);
                     next(err)
                 }
-                model.findOne({username: req.body.username},(err, data)=>{
+                model.findOne({username: req.body.username.toLowerCase()},(err, data)=>{
                     if (err) {
                         res.status(500);
                         next(err)
@@ -56,7 +56,7 @@ server.route('/')
                         //     if(!data) {
                                 // console.log(`Creating user : ${req.body.username}`)
                                 model.create({
-                                    username: req.body.username,
+                                    username: req.body.username.toLowerCase(),
                                     password: hash,
                                     // email: req.body.email,
                                     access: 'user'
@@ -123,7 +123,7 @@ server.route('/')
 
 server.route('/:username')
     .get((req,res,next) => {
-        model.findOne({username: req.params.username}, {}, (err, data) => {
+        model.findOne({username: req.params.username.toLowerCase()}, {}, (err, data) => {
             if(err) {
                 res.status(500);
                 next(err)
