@@ -17,6 +17,10 @@ const Characters = (props) => {
 
     const characterList = characters.length ? (
         characters.map(character => {
+            const element = character.element.charAt(0).toUpperCase() + character.element.substring(1);
+            const tier = character.tier.charAt(0).toUpperCase() + character.tier.substring(1);
+            const role = character.role.charAt(0).toUpperCase() + character.role.substring(1);
+            const type = character.type.charAt(0).toUpperCase() + character.type.substring(1);
             let image = null;
             try {
                 image = require("./img/" + character.tier + "/" + character.name + ".JPG");
@@ -31,19 +35,19 @@ const Characters = (props) => {
                     </Link>
                     <Card.Body>
                         <div className="text-center">
-                            {character.tier}
+                            {tier}
                         </div>
                         <hr />
                         <div className="d-flex flex-column">
                             
                             <div >
-                                {character.role}
+                                {role}
                             </div>
                             <div >
-                                {character.element}
+                                {element}
                             </div>
                             <div >
-                                {character.type}
+                                {type}
                             </div>
                         </div>
                     </Card.Body>

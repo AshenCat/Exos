@@ -29,6 +29,11 @@ class ViewCharacter extends Component {
       const user = React.useContext(UserContext)
       const character = this.state.character;
       if (character){
+        const element = character.element.charAt(0).toUpperCase() + character.element.substring(1);
+        const tier = character.tier.charAt(0).toUpperCase() + character.tier.substring(1);
+        const role = character.role.charAt(0).toUpperCase() + character.role.substring(1);
+        const type = character.type.charAt(0).toUpperCase() + character.type.substring(1);
+        const position = character.position.charAt(0).toUpperCase() + character.position.substring(1);
         let image = null;
             try {
                 image = require("./img/" + character.tier + "/" + character.name + ".JPG");
@@ -44,7 +49,8 @@ class ViewCharacter extends Component {
                 <Col sm={3} style={{}}>
                   <h4 className="text-center">{character.title}</h4>
                   <h2 className="text-center">{character.name}</h2>
-                  <h4 className="text-center">{character.element}</h4>
+                  <h4 className="text-center">{element}</h4>
+                  <h5 className="text-center">{tier}</h5>
                   <div className="text-center">
                     <img className="force-center m-2 img-frame" src={image} alt={`${character.name}`}/>
                   </div>
@@ -115,7 +121,7 @@ class ViewCharacter extends Component {
                         type: "Physical",
                         */}
                         <Row>
-                          <Col md={6}>Role: &nbsp;&nbsp;&nbsp;&nbsp;{character.role}</Col>
+                          <Col md={6}>Role: &nbsp;&nbsp;&nbsp;&nbsp;{role}</Col>
                           <Col md={6}>Sex: &nbsp;&nbsp;&nbsp;&nbsp;{character.sex}</Col>
                         </Row>
                         <Row>
@@ -124,10 +130,10 @@ class ViewCharacter extends Component {
                         </Row>
                         <Row>
                           <Col md={6}>Race: &nbsp;&nbsp;&nbsp;&nbsp;{character.race}</Col>
-                          <Col md={6}>Position: &nbsp;&nbsp;&nbsp;&nbsp;{character.position}</Col>
+                          <Col md={6}>Position: &nbsp;&nbsp;&nbsp;&nbsp;{position}</Col>
                         </Row>
                         <Row>
-                          <Col md>Type: &nbsp;&nbsp;&nbsp;&nbsp;{character.type}</Col>
+                          <Col md>Type: &nbsp;&nbsp;&nbsp;&nbsp;{type}</Col>
                         </Row>
                       </Card.Body>
                     </Accordion.Collapse>
