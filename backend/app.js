@@ -15,6 +15,7 @@ const config = require('./config/conf');
 
 const port = 7172;
 
+mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.connect(config.db, {useNewUrlParser: true, useUnifiedTopology: true}).then(
     ()=>console.log(`Successfully connected to the database locally`), err => 
