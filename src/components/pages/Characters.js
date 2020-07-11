@@ -10,7 +10,7 @@ const Characters = (props) => {
 
     React.useEffect(() => {
         axios.get('http://localhost:7172/api/character/').then((res) =>{
-            console.log(res.data.payload)
+            // console.log(res.data.payload)
             setCharacters(res.data.payload)
         }).catch((err)=> console.log(err))
     }, [])
@@ -28,8 +28,8 @@ const Characters = (props) => {
                 image = require("./img/Generic.JPG");
             }
             return (
-                <Card key={character._id} className="p-2 m-2">
-                    <Link to={`/Characters/View/${character.tier}/${character.name}`} className="characters-title">
+                <Card key={character._id} className="p-2 m-2 dark-mode-2">
+                    <Link to={`/Characters/View/${character.tier}/${character.name}`} className="characters-title dark-mode-2">
                         <Card.Title className="text-center">{character.name}</Card.Title>
                         <Card.Img className="img-frame" variant="top" draggable="false" src={image} alt={character.name}/>
                     </Link>
