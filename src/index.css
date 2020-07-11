@@ -74,3 +74,17 @@ a.characters-title{
     display: none !important;
   }
 }
+
+body {
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode {
+  background-color: #1a1919 !important;
+  color: #999!important;
+}
+
+.dark-mode-2 {
+  background-color: transparent !important;
+  color: inherit !important;
+}
