@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom'
-import { Card, Accordion, Button, Container, Col, Row, ListGroup, Spinner } from 'react-bootstrap';
+import { Card, Accordion, Button, Container, Col, Row, ListGroup, Spinner, Modal } from 'react-bootstrap';
 import { UserContext } from '../../App'
 import axios from 'axios'
 class ViewCharacter extends Component {
@@ -9,22 +9,61 @@ class ViewCharacter extends Component {
         let name = this.props.match.params.name;
         let tier = this.props.match.params.tier;
         this.setState({name})
-        console.log(tier + " " + name)
-        axios.get("http://localhost:7172/api/character/" + tier + "/" + name).then(res => {
-          this.setState({didRespond: true, character: res.data.payload});
-        }).catch(err=>console.log(err))
+        // console.log(tier + " " + name)
+        if(name && tier)
+          axios.get("http://localhost:7172/api/character/" + tier + "/" + name).then(res => {
+            this.setState({didRespond: true, character: res.data.payload});
+          }).catch(err=>console.log(err))
     }
 
     state = { 
         name: null,
         character: null,
-        didRespond: false
+        didRespond: false,
+        deleteModal: false,
+        deleteWarning: false,
+        deleteResponse: false
     }
 
     backOnClick = () => {
       this.props.history.goBack();
     }
     
+    editOnClick = (name, tier) => {
+      this.props.history.push(`/Characters/Edit/${tier}/${name}`);
+    }
+
+    deleteOnClick = () => {
+      axios.delete(`http://localhost:7172/api/character/id/${this.state.character._id}`,  {withCredentials: true})
+        .then(res=>{
+          // console.log(this.state.character._id)
+          this.setState({deleteResponse: res.data.msg})
+        })
+    }
+
+   showDeleteOnClick = () => {
+      this.setState({deleteModal: true})
+    }
+
+    DeleteAfterFive = () => {
+      
+      setTimeout(()=>{
+        this.setState({deleteWarning: true})
+      }, 5000)
+
+      return (<div className="text-center">
+        <div>You are about to delete the character...</div>
+        <Button 
+        onClick={()=>this.deleteOnClick()}
+        variant="danger" 
+        disabled={!this.state.deleteWarning}>
+          Delete
+        </Button>
+      </div>)
+    }
+
+
+
     displayCharacter = () => {
       const user = React.useContext(UserContext)
       const character = this.state.character;
@@ -43,10 +82,16 @@ class ViewCharacter extends Component {
         return(
             <Container className="mt-4">
               <Row className="flex-row-reverse">
-                <Button className="mr-4 mb-3" size="lg" variant="outline-secondary" onClick={this.backOnClick}>Back</Button>{user && user.access.toLowerCase() === "admin" ? <Button className="mr-4 mb-3" size="lg" variant="outline-info">Edit</Button> : <div></div>}
+                <Button className="mr-4 mb-3" size="lg" variant="outline-secondary" onClick={this.backOnClick}>Back</Button>
+                {user && user.access.toLowerCase() === "admin" ? <>
+                <Button className="mr-4 mb-3" size="lg" variant="outline-info" onClick={() => this.editOnClick(character.name, character.tier)}>Edit</Button> 
+                <Button className="mr-4 mb-3" size="lg" variant="outline-danger" onClick={() => {this.showDeleteOnClick()}}>Delete</Button> 
+                
+                </>: 
+                <div></div>}
               </Row>
               <Row>
-                <Col sm={3} style={{}}>
+                <Col md={3} style={{}}>
                   <h4 className="text-center">{character.title}</h4>
                   <h2 className="text-center">{character.name}</h2>
                   <h4 className="text-center">{element}</h4>
@@ -59,7 +104,7 @@ class ViewCharacter extends Component {
                 
                 <Row>
                   <Accordion defaultActiveKey="0" style={{"width": "100%"}}>
-                  <Card>
+                  <Card className="dark-mode-2">
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey="0">
                         Skills
@@ -68,19 +113,19 @@ class ViewCharacter extends Component {
                     <Accordion.Collapse eventKey="0">
                       <Card.Body>
                         <ListGroup variant="flush">
-                          <ListGroup.Item>
+                          <ListGroup.Item className="dark-mode-2">
                             <div className="pre-wrap-me"><b>[Passive] {character.skills.passive.name}</b></div>
                             {character.skills.passive.description.map((skill, no) => {
                               return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
                             })}
                           </ListGroup.Item>
-                          <ListGroup.Item>
+                          <ListGroup.Item className="dark-mode-2">
                             <div className="pre-wrap-me"><b>[Active 1] {character.skills.active1.name} - Cost: {character.skills.active1.cost}</b></div>
                             {character.skills.active1.description.map((skill, no) => {
                               return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
                             })}
                           </ListGroup.Item>
-                          <ListGroup.Item>
+                          <ListGroup.Item className="dark-mode-2">
                             <div className="pre-wrap-me"><b>[Active 2] {character.skills.active2.name} - Cost: {character.skills.active2.cost}</b></div>
                             {character.skills.active2.description.map((skill, no) => {
                               return <div className="pre-wrap-me" key={no}>{skill + "\n\n"}</div>
@@ -90,7 +135,7 @@ class ViewCharacter extends Component {
                       </Card.Body>
                     </Accordion.Collapse>
                   </Card>
-                  <Card>
+                  <Card className="dark-mode-2">
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey="1">
                         Backstory
@@ -100,7 +145,7 @@ class ViewCharacter extends Component {
                       <Card.Body className="pre-wrap-me">{character.description}</Card.Body>
                     </Accordion.Collapse>
                   </Card>
-                  <Card>
+                  <Card className="dark-mode-2">
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey="2">
                         Other info
@@ -138,7 +183,7 @@ class ViewCharacter extends Component {
                       </Card.Body>
                     </Accordion.Collapse>
                   </Card>
-                  <Card>
+                  <Card className="dark-mode-2">
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey="4">
                         Stats
@@ -166,7 +211,7 @@ class ViewCharacter extends Component {
                             <ListGroup>
                               {character.maxStats.map((stats, count) => {
                                 return (
-                                <ListGroup.Item key={count}>
+                                <ListGroup.Item key={count} className="dark-mode-2">
                                   <h5>Level: {stats.level}</h5>
                                   <hr />
                                   <Row>
@@ -241,20 +286,27 @@ class ViewCharacter extends Component {
     }
 
     render() { 
-        const selectedCharacter = this.state.name ? (<this.displayCharacter />) : 
-                    <Container>
-                      <Row>
-                      <Spinner animation="border" className="force-center">
-                          <span className="sr-only">Loading...</span>
-                      </Spinner>
-                      </Row>
-                      <Row className="text-center">
-                          <p className="text-center">This should not take more than 45 seconds</p>
-                      </Row>
-                    </Container>;
         return ( 
         <div>
-            {selectedCharacter}
+          {this.state.didRespond ? this.state.character === null ? "Bad Request. Make sure the character exists. If so, contact the developer..." : <this.displayCharacter /> : 
+                  <Container className="mt-4">
+                    <Row>
+                    <Spinner animation="border" className="force-center">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                    </Row>
+                    <Row className="justify-content-center mt-4">
+                        <span>Sending request to the server. This should not take more than 45 seconds.</span>
+                    </Row>
+                  </Container>}
+          <Modal show={this.state.deleteModal} onHide={()=>this.setState({deleteModal: false, deleteResponse: false})}>
+            <Modal.Header closeButton>
+            <Modal.Title>{this.state.deleteResponse ? "DELETE request" : "WARNING"}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {this.state.deleteResponse ? this.state.deleteResponse : <this.DeleteAfterFive />}
+            </Modal.Body>
+          </Modal>
         </div>
         );
     }
