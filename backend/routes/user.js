@@ -54,7 +54,7 @@ server.route('/')
                     if(!data){
                         // model.findOne({email: req.body.email}, (err, data) => {
                         //     if(!data) {
-                                console.log(`Creating user : ${req.body.username}`)
+                                // console.log(`Creating user : ${req.body.username}`)
                                 model.create({
                                     username: req.body.username,
                                     password: hash,
@@ -99,7 +99,7 @@ server.route('/')
         */
        //console.log(`posted`);
        passport.authenticate("local", (err,user,info) => {
-           console.log(`Passport check user: ${user}`)
+        //    console.log(`Passport check user: ${user}`)
             if (err) {
                 res.status(500);
                 next(err)
@@ -138,7 +138,7 @@ server.route('/:username')
 
 server.route('/auth')
     .post((req,res,next) => {
-        console.log(`Trying to authenticate: ${req.user}`)
+        // console.log(`Trying to authenticate: ${req.user}`)
         if(!req.user) {
             res.json(null)
         }
