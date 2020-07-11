@@ -9,19 +9,31 @@ let reqString = {
 
 let characterSchema = new Schema({
     name: reqString,
-    role: reqString,
+    role: {
+        type: String,
+        required: true,
+        enum: ['warrior', 'wizard', 'enchanter', 'cleric', 'guardian', 'knight', 'paladin', 'ranger', 'assassin', 'trickster']
+    },
     sex: String,
     nation: reqString,
-    tier: {
+    tier: reqString,
+    element: {
         type: String,
-        enum: ['fatecore' ,'fated', 'legendary', 'rare', 'magic', 'common'],
-        required: true
+        required: true,
+        enum: ['dark', 'light', 'machine', 'nature', 'frost', 'fire']
     },
-    element: reqString,
     age: String,
     race: reqString,
-    position: reqString,
-    type: reqString,
+    position: {
+        type: String,
+        required: true,
+        enum: ['attack', 'chaos', 'defense', 'support']
+    },
+    type: {
+        type: String,
+        required: true,
+        enum: ['physical', 'magical']
+    },
     title: String,
     description: String,
     skills: {

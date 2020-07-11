@@ -51,6 +51,10 @@ const CharacterForm = (props) => {
       props.history.push('/Characters')
     }
   }, [user, props])
+
+  // React.useEffect(() => {
+  //   if()
+  // }, [])
   
   const [character, setCharacter] = React.useState(props.character ? 
       props.character : {
@@ -245,7 +249,9 @@ const CharacterForm = (props) => {
                     value={character.tier ? character.tier : "-----"}
                     onChange={e=>setCharacter({...character, tier: e.target.value})}>
                     <option value="-----" disabled>-----</option>
-                    <option value="fatecore">Fate Core</option>
+                    <option value="gold fatecore">Gold Fate Core</option>
+                    <option value="blue fatecore">Blue Fate Core</option>
+                    <option value="black fatecore">Black Fate Core</option>
                     <option value="fated">Fated</option>
                     <option value="legendary">Legendary</option>
                     <option value="rare">Rare</option>
@@ -382,7 +388,23 @@ const CharacterForm = (props) => {
                         type: "Physical",
                         */}
                         <Row>
-                          <Col md={6}>Role: <Form.Control className="inline-form"  name="role" onChange={e=>setCharacter({...character, role: e.target.value})} /></Col>
+                          <Col md={6}>Role: 
+                            <Form.Control as="select" className="inline-form"
+                              value={character.role ? character.role : "-----"}
+                              onChange={e=>setCharacter({...character, role: e.target.value})}>
+                              <option value="-----" disabled>-----</option>
+                              <option value="warrior">Warrior</option>
+                              <option value="wizard">Wizard</option>
+                              <option value="enchanter">Enchanter</option>
+                              <option value="cleric">Cleric</option>
+                              <option value="guardian">Guardian</option>
+                              <option value="knight">Knight</option>
+                              <option value="paladin">Paladin</option>
+                              <option value="ranger">Ranger</option>
+                              <option value="assassin">Assassin</option>
+                              <option value="trickster">Trickster</option>
+                            </Form.Control>
+                          </Col>
                           <Col md={6}>Sex: <Form.Control className="inline-form" onChange={e=>setCharacter({...character, sex: e.target.value})} /></Col>
                         </Row>
                         <Row>
@@ -391,10 +413,28 @@ const CharacterForm = (props) => {
                         </Row>
                         <Row>
                           <Col md={6}>Race: <Form.Control className="inline-form"  name="race" onChange={e=>setCharacter({...character, race: e.target.value})} /></Col>
-                          <Col md={6}>Position: <Form.Control className="inline-form"   name="position" onChange={e=>setCharacter({...character, position: e.target.value})} /></Col>
+                          <Col md={6}>Position: 
+                            <Form.Control as="select" className="inline-form"
+                              value={character.position ? character.position : "-----"}
+                              onChange={e=>setCharacter({...character, position: e.target.value})}>
+                              <option value="-----" disabled>-----</option>
+                              <option value="attack">Attack</option>
+                              <option value="chaos">Chaos</option>
+                              <option value="defense">Defense</option>
+                              <option value="support">Support</option>
+                            </Form.Control>
+                          </Col>
                         </Row>
                         <Row>
-                          <Col md>Type: <Form.Control className="inline-form"   name="type" onChange={e=>setCharacter({...character, type: e.target.value})} /></Col>
+                          <Col md>Type: 
+                            <Form.Control as="select" className="inline-form"
+                              value={character.type ? character.type : "-----"}
+                              onChange={e=>setCharacter({...character, type: e.target.value})}>
+                              <option value="-----" disabled>-----</option>
+                              <option value="physical">Physical</option>
+                              <option value="magical">Magical</option>
+                            </Form.Control>
+                          </Col>
                         </Row>
                       </Card.Body>
                     </Accordion.Collapse>
@@ -498,7 +538,7 @@ const CharacterForm = (props) => {
           </Form>
             <Modal show={show} onHide={()=>{setShow(false); setDidRespond(null)}}>
               <Modal.Header closeButton>
-                  <Modal.Title>{didRespond ? "Character successfully created" : "Loading"}</Modal.Title>
+                  <Modal.Title>{didRespond ? "Server responded" : "Loading"}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                   {didRespond ? didRespond.payload ? `${didRespond.msg} named ${didRespond.payload}` : `${didRespond.msg}` : 
