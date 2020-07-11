@@ -7,7 +7,7 @@ server.route('/')
     .get((req, res, next)=>{
         model.find({}).then((doc, err)=>{
             if(err) {
-                res.status(200)
+                res.status(500)
                 next(err);
             }
             else res.json({
@@ -32,18 +32,29 @@ server.route('/')
          }
         else{
             console.log(req.data);
-            model.create(character, (err, data) =>{
+            model.findOne({name: character.name, tier: character.tier}, (err, doc) => {
                 if(err) {
                     res.status(500);
-                    // console.log("----------------------------------------------------")
-                    // console.log(err);
-                    // console.log("----------------------------------------------------")
                     next(err);
                 }
-                else res.json({
-                    msg: "Successfully added new character",
-                    payload: data.name
-                })
+                else if (doc) {
+                    res.json({msg: `${character.tier} - ${character.name} already exists`, payload: null})
+                }
+                else {
+                    model.create(character, (err, data) =>{
+                        if(err) {
+                            res.status(500);
+                            // console.log("----------------------------------------------------")
+                            // console.log(err);
+                            // console.log("----------------------------------------------------")
+                            next(err);
+                        }
+                        else res.json({
+                            msg: "Successfully added new character",
+                            payload: data.name
+                        })
+                    })
+                }
             })
         }
     });
@@ -55,7 +66,7 @@ server.route('/:tier/:name')
         if(tier && name) 
             model.findOne({tier, name}, (err, doc) => {
                 if(err) {
-                    res.status(200);
+                    res.status(500);
                     next(err);
                 }
                 else if (doc) {
