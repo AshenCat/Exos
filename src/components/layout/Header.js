@@ -2,7 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { Navbar, Nav, NavDropdown, Form, InputGroup, Col, Button, Spinner } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-import DarkModeToggle from '../helper/DarkModeToggle'
+import DarkModeToggle from '../helper/DarkModeToggle';
+import target from '../helper/target';
 
 const Header = (props) => {
 
@@ -13,7 +14,7 @@ const Header = (props) => {
 
   const logout = (e) => {
     e.preventDefault();
-    axios.post(`${process.env.REACT_APP_TARGET}/api/user/logout`, {}, {withCredentials: true})
+    axios.post(`${target}/api/user/logout`, {}, {withCredentials: true})
       .then((res) => {
         setUsername("");
         setPassword("");
@@ -30,7 +31,7 @@ const Header = (props) => {
   const submit = (e) => {
     e.preventDefault();
     setIsSubmitting(true)
-    axios.post(`${process.env.REACT_APP_TARGET}/api/user`, {username, password}, {withCredentials: true})
+    axios.post(`${target}/api/user`, {username, password}, {withCredentials: true})
       .then((res) => {
         // console.log(`Login:`)
         // console.log(res.data.payload)

@@ -10,6 +10,8 @@ import Header from './components/layout/Header'
 import Content from './components/Content'
 import Footer from './components/layout/Footer';
 
+import target from './components/helper/target';
+
 export const UserContext = React.createContext();
 
 const App = () => {
@@ -19,7 +21,7 @@ const App = () => {
   // const setSession = (session) => this.setState({session}) 
 
     React.useEffect(() => {
-    axios.post(`${process.env.REACT_APP_TARGET}/api/user/auth`,{}, {withCredentials: true})
+    axios.post(`${target}/api/user/auth`,{}, {withCredentials: true})
       .then(res => {
           if(!session) {
             // console.log("useEffect on header : ")

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Container, Form, Col, Button, Row, InputGroup, Modal, Card, Spinner } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import { UserContext } from '../../App';
+import target from '../helper/target';
 
 
 const Register = (props) => {
@@ -40,7 +41,7 @@ const Register = (props) => {
         else setValidated(true);
         setShowSuccess(true)
         console.log(email)
-        axios.put(`${process.env.REACT_APP_TARGET}/api/user/`, {username, password})
+        axios.put(`${target}/api/user/`, {username, password})
             .then((res) => {
                 // console.log(res.data)
                 if(res.data.payload.username !== null) {
@@ -55,7 +56,7 @@ const Register = (props) => {
 
     const usernameCheck = () => {
         if (username.length < 7) return;
-        axios.get(`${process.env.REACT_APP_TARGET}/api/user/${username}`)
+        axios.get(`${target}/api/user/${username}`)
             .then((res)=>{
                 // console.log("Checking if user is valid...");
                 // console.log(res.data);

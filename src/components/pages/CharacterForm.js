@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Card, Accordion, Button, Container, Col, Row, ListGroup, Form, InputGroup, Modal, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { UserContext } from '../../App';
+import target from '../helper/target';
 
 // characters: [{
 //     _id: 1,
@@ -93,7 +94,7 @@ const CharacterForm = (props) => {
 
   React.useEffect(() => {
     if(props.match.params.name && props.match.params.tier){
-      axios.get(`${process.env.REACT_APP_TARGET}/api/character/` + props.match.params.tier + "/" + props.match.params.name).then(res=>{
+      axios.get(`${target}/api/character/` + props.match.params.tier + "/" + props.match.params.name).then(res=>{
         if(res.data.payload) setCharacter(res.data.payload)
       })
     }
@@ -214,14 +215,14 @@ const CharacterForm = (props) => {
       e.preventDefault()
       setShow(true)
       if(!character._id) 
-        axios.put(`${process.env.REACT_APP_TARGET}/api/character/`, character, {withCredentials: true}).then((res)=>{
+        axios.put(`${target}/api/character/`, character, {withCredentials: true}).then((res)=>{
         setTimeout(()=>{
           // console.log(res.data)
           setDidRespond(res.data)
         }, 1000);
       })
       else {
-        axios.patch(`${process.env.REACT_APP_TARGET}/api/character/`, character, {withCredentials: true}).then((res)=>{
+        axios.patch(`${target}/api/character/`, character, {withCredentials: true}).then((res)=>{
         setTimeout(()=>{
           // console.log(res.data)
           setDidRespond(res.data)

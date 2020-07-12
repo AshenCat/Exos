@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom'
 import { Card, Accordion, Button, Container, Col, Row, ListGroup, Spinner, Modal } from 'react-bootstrap';
 import { UserContext } from '../../App'
 import axios from 'axios'
+import target from '../helper/target'
 class ViewCharacter extends Component {
     componentDidMount(){
         // console.log(this.props)
@@ -11,7 +12,7 @@ class ViewCharacter extends Component {
         this.setState({name})
         // console.log(tier + " " + name)
         if(name && tier)
-          axios.get(`${process.env.REACT_APP_TARGET}/api/character/` + tier + "/" + name).then(res => {
+          axios.get(`${target}/api/character/` + tier + "/" + name).then(res => {
             this.setState({didRespond: true, character: res.data.payload});
           }).catch(err=>console.log(err))
     }
@@ -34,7 +35,7 @@ class ViewCharacter extends Component {
     }
 
     deleteOnClick = () => {
-      axios.delete(`${process.env.REACT_APP_TARGET}/${this.state.character._id}`,  {withCredentials: true})
+      axios.delete(`${target}/${this.state.character._id}`,  {withCredentials: true})
         .then(res=>{
           // console.log(this.state.character._id)
           this.setState({deleteResponse: res.data.msg})

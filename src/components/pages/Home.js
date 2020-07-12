@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
+import target from '../helper/target';
 
 const Home = (props) => {
     const [data, setData] = React.useState(null)
@@ -13,7 +14,7 @@ const Home = (props) => {
                 (e)=>{
                     
                   e.preventDefault();
-                  axios.post(`${process.env.REACT_APP_TARGET}/api/user/auth`,{}, {withCredentials: true})
+                  axios.post(`${target}/api/user/auth`,{}, {withCredentials: true})
                     .then(res => {
                         // console.log(res)
                         setData(res.data)
@@ -21,7 +22,7 @@ const Home = (props) => {
                 }
             }>Check if authenticated</Button>
             <div>Please head to Characters tab...</div>
-            {process.env.REACT_APP_TARGET}
+            {target}
         </div>
     );
 }

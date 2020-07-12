@@ -2,14 +2,15 @@ import React from 'react';
 import {withRouter, Link} from 'react-router-dom';
 import {Card, Row} from 'react-bootstrap';
 import { UserContext } from '../../App';
-import axios from 'axios'
+import axios from 'axios';
+import target from '../helper/target';
 
 const Characters = (props) => {
     const user = React.useContext(UserContext);
     const [characters, setCharacters] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get(`${process.env.REACT_APP_TARGET}/api/character/`).then((res) =>{
+        axios.get(`${target}/api/character/`).then((res) =>{
             // console.log(res.data.payload)
             setCharacters(res.data.payload)
         }).catch((err)=> console.log(err))
