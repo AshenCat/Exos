@@ -9,7 +9,7 @@ const Characters = (props) => {
     const [characters, setCharacters] = React.useState([]);
 
     React.useEffect(() => {
-        axios.get('http://localhost:7172/api/character/').then((res) =>{
+        axios.get(`${process.env.REACT_APP_TARGET}/api/character/`).then((res) =>{
             // console.log(res.data.payload)
             setCharacters(res.data.payload)
         }).catch((err)=> console.log(err))

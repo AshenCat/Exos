@@ -19,7 +19,7 @@ const App = () => {
   // const setSession = (session) => this.setState({session}) 
 
     React.useEffect(() => {
-    axios.post('http://localhost:7172/api/user/auth',{}, {withCredentials: true})
+    axios.post(`${process.env.REACT_APP_TARGET}/api/user/auth`,{}, {withCredentials: true})
       .then(res => {
           if(!session) {
             // console.log("useEffect on header : ")

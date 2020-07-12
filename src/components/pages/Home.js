@@ -13,7 +13,7 @@ const Home = (props) => {
                 (e)=>{
                     
                   e.preventDefault();
-                  axios.post('http://localhost:7172/api/user/auth',{}, {withCredentials: true})
+                  axios.post(`${process.env.REACT_APP_TARGET}/api/user/auth`,{}, {withCredentials: true})
                     .then(res => {
                         // console.log(res)
                         setData(res.data)
@@ -21,6 +21,7 @@ const Home = (props) => {
                 }
             }>Check if authenticated</Button>
             <div>Please head to Characters tab...</div>
+            {process.env.REACT_APP_TARGET}
         </div>
     );
 }

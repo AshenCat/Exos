@@ -40,7 +40,7 @@ const Register = (props) => {
         else setValidated(true);
         setShowSuccess(true)
         console.log(email)
-        axios.put(`http://localhost:7172/api/user/`, {username, password})
+        axios.put(`${process.env.REACT_APP_TARGET}/api/user/`, {username, password})
             .then((res) => {
                 // console.log(res.data)
                 if(res.data.payload.username !== null) {
@@ -55,7 +55,7 @@ const Register = (props) => {
 
     const usernameCheck = () => {
         if (username.length < 7) return;
-        axios.get(`http://localhost:7172/api/user/${username}`)
+        axios.get(`${process.env.REACT_APP_TARGET}/api/user/${username}`)
             .then((res)=>{
                 // console.log("Checking if user is valid...");
                 // console.log(res.data);

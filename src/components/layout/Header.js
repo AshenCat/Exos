@@ -13,7 +13,7 @@ const Header = (props) => {
 
   const logout = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:7172/api/user/logout', {}, {withCredentials: true})
+    axios.post(`${process.env.REACT_APP_TARGET}/api/user/logout`, {}, {withCredentials: true})
       .then((res) => {
         setUsername("");
         setPassword("");
@@ -30,7 +30,7 @@ const Header = (props) => {
   const submit = (e) => {
     e.preventDefault();
     setIsSubmitting(true)
-    axios.post('http://localhost:7172/api/user', {username, password}, {withCredentials: true})
+    axios.post(`${process.env.REACT_APP_TARGET}/api/user`, {username, password}, {withCredentials: true})
       .then((res) => {
         // console.log(`Login:`)
         // console.log(res.data.payload)

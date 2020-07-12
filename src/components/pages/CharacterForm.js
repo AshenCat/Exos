@@ -93,7 +93,7 @@ const CharacterForm = (props) => {
 
   React.useEffect(() => {
     if(props.match.params.name && props.match.params.tier){
-      axios.get("http://localhost:7172/api/character/" + props.match.params.tier + "/" + props.match.params.name).then(res=>{
+      axios.get(`${process.env.REACT_APP_TARGET}/api/character/` + props.match.params.tier + "/" + props.match.params.name).then(res=>{
         if(res.data.payload) setCharacter(res.data.payload)
       })
     }
@@ -214,14 +214,14 @@ const CharacterForm = (props) => {
       e.preventDefault()
       setShow(true)
       if(!character._id) 
-        axios.put('http://localhost:7172/api/character/', character, {withCredentials: true}).then((res)=>{
+        axios.put(`${process.env.REACT_APP_TARGET}/api/character/`, character, {withCredentials: true}).then((res)=>{
         setTimeout(()=>{
           // console.log(res.data)
           setDidRespond(res.data)
         }, 1000);
       })
       else {
-        axios.patch('http://localhost:7172/api/character/', character, {withCredentials: true}).then((res)=>{
+        axios.patch(`${process.env.REACT_APP_TARGET}/api/character/`, character, {withCredentials: true}).then((res)=>{
         setTimeout(()=>{
           // console.log(res.data)
           setDidRespond(res.data)

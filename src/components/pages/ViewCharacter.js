@@ -11,7 +11,7 @@ class ViewCharacter extends Component {
         this.setState({name})
         // console.log(tier + " " + name)
         if(name && tier)
-          axios.get("http://localhost:7172/api/character/" + tier + "/" + name).then(res => {
+          axios.get(`${process.env.REACT_APP_TARGET}/api/character/` + tier + "/" + name).then(res => {
             this.setState({didRespond: true, character: res.data.payload});
           }).catch(err=>console.log(err))
     }
@@ -34,7 +34,7 @@ class ViewCharacter extends Component {
     }
 
     deleteOnClick = () => {
-      axios.delete(`http://localhost:7172/api/character/id/${this.state.character._id}`,  {withCredentials: true})
+      axios.delete(`${process.env.REACT_APP_TARGET}/${this.state.character._id}`,  {withCredentials: true})
         .then(res=>{
           // console.log(this.state.character._id)
           this.setState({deleteResponse: res.data.msg})
