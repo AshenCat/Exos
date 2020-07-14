@@ -34,18 +34,19 @@ const Header = (props) => {
     axios.post(`${target}/api/user`, {username, password}, {withCredentials: true})
       .then((res) => {
         // console.log(`Login:`)
-        // console.log(res.data.payload)
-        if(res.data.payload) setTimeout(() => {
+        console.log(res.data.payload)
+        if(res.data.payload) //setTimeout(() => {
+          // console.log(res.data.payload)
           props.setSession(res.data.payload)
-          setIsSubmitting(false)
-        }, 500)
+        //}, 500)
       })
       .catch(err=>{
         console.log(`Error 🐱‍👤 : ${err}`)
-        setTimeout(() => {
-          setIsSubmitting(false)
-        }, 500)
+        
       })
+      setTimeout(() => {
+        setIsSubmitting(false)
+      }, 500)
   }
 
   // React.useEffect(() => {
