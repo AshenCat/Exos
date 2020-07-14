@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom'
 import { Card, Accordion, Button, Container, Col, Row, ListGroup, Spinner, Modal } from 'react-bootstrap';
 import { UserContext } from '../../App'
+import Comment from './subcomponents/Comments'
 import axios from 'axios'
 import target from '../helper/target'
 class ViewCharacter extends Component {
@@ -252,34 +253,8 @@ class ViewCharacter extends Component {
               </Row>
               {/* Recommendations maybe here */}
               <Row>
-              {/* comments: [{
-                    user: "TOP KEK",
-                    comment: "kekkers bruh...",
-                    timestamp: Date.now(),
-                    patch: "Zeon"
-                }] */}
-                {/* <h3 className="mt-4">{character.comments === [] ? "0 Comments" : character.comments.length !== 1? `${character.comments.length} Comments` : "1 Comment"} :</h3>
-                <Container>
-                  <ListGroup>
-                    {character.comments !== [] ? 
-                    character.comments.map((comment, ctr) => { 
-                      return  <ListGroup.Item key={ctr}>
-                                <Container>
-                                <Row>
-                                  <div><img src={require("../../img/Avatar1.png")} width="75px" height="75px" alt="user avatar"/></div>
-                                  <div className="ml-4 mt-2">
-                                    <Row>{`${comment.timestamp.toString()}`}</Row>
-                                    <Row><h6 className="mr-1" style={{"marginBottom":"0px", "display":"inline", "lineHeight":"1.5"}}>{comment.user}</h6> said:  </Row>
-                                  </div>
-                                </Row>
-                                <Row>
-                                  <div style={{"marginLeft":"75px", "paddingLeft":"10px"}}>{comment.comment}</div>
-                                </Row>
-                                </Container>
-                              </ListGroup.Item>
-                    }) : <div></div>}
-                  </ListGroup>
-                </Container> */}
+              {/* Comments section */}
+              <Comment character={character._id}/>
               </Row>
             </Container>
         )

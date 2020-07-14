@@ -73,8 +73,24 @@ a.characters-title{
   .no-show-wen-smol-pls {
     display: none !important;
   }
+  .width-100 {
+    width: 100% !important;
+  }
+  .u:after {
+    content: "Upvote"
+  }
+  .d:after {
+    content: "Downvote"
+  }
+  .comment-message {
+    margin-left: 0px !important;
+    padding-left: 0px !important;
+  }
 }
-
+.comment-message {
+  margin-left: 75px;
+  padding-left: 10px;
+}
 body {
   transition: background-color 0.3s ease;
 }
@@ -87,4 +103,8 @@ body {
 .dark-mode-2 {
   background-color: transparent !important;
   color: inherit !important;
+}
+
+.width2-100 {
+  width: 100% !important;
 }
