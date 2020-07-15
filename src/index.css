@@ -74,6 +74,7 @@ a.characters-title{
     display: none !important;
   }
   .width-100 {
+    margin-top:10px;
     width: 100% !important;
   }
   .u:after {
