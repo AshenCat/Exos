@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const userRoute = require('./routes/user');
 const characterRoute = require('./routes/character');
+const commentRoute = require('./routes/comment');
 const config = require('./config/conf');
 
 const port = 7172;
@@ -50,6 +51,7 @@ app.use(helmet());
 //Routes section
 app.use('/api/user', userRoute);
 app.use('/api/character', characterRoute);
+app.use('/api/comment', commentRoute)
 
 app.use((req,res)=> {
     if(res.statusCode === 200) res.status(404)
