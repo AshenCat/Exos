@@ -28,7 +28,7 @@ class ViewCharacter extends Component {
     }
 
     backOnClick = () => {
-      this.props.history.goBack();
+      this.props.history.push('/Characters');
     }
     
     editOnClick = (name, tier) => {
