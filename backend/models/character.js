@@ -8,6 +8,11 @@ let reqString = {
 }
 
 let characterSchema = new Schema({
+    createdBy: String,
+    editedBy: {
+        type: String,
+        default: null
+    },
     name: reqString,
     role: {
         type: String,
