@@ -108,10 +108,23 @@ const Comments = (props) => {
     const fetchComments = () => {
         axios.get(`${target}/api/comment/character/${props.character}`).then(res => {
             console.log(res.data.payload)
-            setComments(res.data.payload.filter((comment) => comment.childOf === null))
-            setSubComments(res.data.payload.filter((comment) => comment.childOf !== null))
+            setComments(res.data.payload.sort((a, b) => {
+                if (a.createdAt > b.createdAt) return -1;
+                else return 1
+            }).filter((comment) => comment.childOf === null))
+            setSubComments(res.data.payload.sort((a, b) => {
+                if (a.createdAt > b.createdAt) return -1;
+                else return 1
+            }).filter((comment) => comment.childOf !== null))
         }).catch(err =>{
             console.log(err)
+        })
+    }
+
+    const voteComment = (vote, id) => {
+        axios.patch(`${target}/api/comment/vote/${id}`, {vote}, {withCredentials: true}).then(res=>{
+            console.log(res.data)
+            fetchComments();
         })
     }
     
@@ -146,23 +159,6 @@ const Comments = (props) => {
                                             </InputGroup>
                                         </Col>
                                     </Form.Row>
-                                    {/* <Form.Row className="mt-1">
-                                        <Col sm={2}><Form.Label htmlFor="username">To: </Form.Label></Col>
-                                        <Col md={4} sm={6}>
-                                            <InputGroup>
-                                                <InputGroup.Prepend className="ml-3" >
-                                                  <InputGroup.Text>@</InputGroup.Text>
-                                                </InputGroup.Prepend>
-                                                <Form.Control 
-                                                    id="reply" 
-                                                    defaultValue={childOf ? `${childOf.user}@${childOf._id}` : ""}
-                                                    readOnly/>
-                                                <InputGroup.Append>
-                                                    <Button variant="outline-warning" onClick={()=>setChildOf(null)}>Clear</Button>
-                                                </InputGroup.Append>
-                                            </InputGroup>
-                                        </Col>
-                                    </Form.Row> */}
                                 </Form>
                                 <InputGroup>
                                     <Form.Control 
@@ -198,9 +194,9 @@ const Comments = (props) => {
                                         <Col sm={2} className="ml-auto ml-3">
                                             <Row className="flex-row-reverse">
                                                 <ButtonGroup vertical className="width-100">
-                                                    <Button variant="outline-secondary" className="width-100 u">+</Button>
-                                                    <Button disabled variant="outline-info">{comment.points}</Button>
-                                                    <Button variant="outline-warning" className="width-100 d">-</Button>
+                                                    <Button variant="outline-secondary" className="width-100 u" onClick={()=>voteComment("up", comment._id)}>+</Button>
+                                                    <Button variant="info" onClick={fetchComments}>{comment.points}</Button>
+                                                    <Button variant="outline-warning" className="width-100 d" onClick={()=>voteComment("down", comment._id)}>-</Button>
                                                 </ButtonGroup>
                                             </Row>
                                         </Col>
@@ -210,7 +206,6 @@ const Comments = (props) => {
                                     </Row>
                                     <Row className="mt-2 mb-2 flex-row-reverse">
                                         <div></div>{user ? comment.user === user.username ? <Button variant="outline-info">Edit</Button> : null : null}
-                                        {/* <Button size="sm" variant="outline-secondary" onClick={()=>onReply(comment)}>Reply</Button> */}
                                     </Row>
                                     <Row>
                                         <ListGroup className="width2-100">
@@ -228,17 +223,6 @@ const Comments = (props) => {
                                                             </div>
                                                         </Row>
                                                         <Row className="pl-3 mb-2"><div className="mt-3 pre-wrap-me">{subComment.message}</div></Row>
-                                                        {/* <InputGroup>
-                                                            <Form.Control 
-                                                                as="textarea" 
-                                                                id={`reply@${comment._id}`} 
-                                                                rows="3" 
-                                                                placeholder="Reply to this comment..."/>
-                                                            <InputGroup.Append>
-                                                                <Button variant="outline-secondary" onClick={()=>submitComment(`reply@${comment._id}`)}>Post</Button>
-                                                            </InputGroup.Append>
-                                                        </InputGroup>
-                                                        <Form.Text muted>Still need to fill up username from above</Form.Text> */}
                                                     </ListGroup.Item>
                                             })}
                                             {/* Since comment._id is unique, I'll name each form's id with it */}
