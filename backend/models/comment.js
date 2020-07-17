@@ -12,13 +12,25 @@ const commentSchema = new Schema({
         ref: "user",
         required: true
     },
-    message: {
-        type: String,
-        required: true
-    },
+    userVotes: [{
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: "user",
+            required: true
+        },
+        vote: {
+            type: String,
+            enum: ["up", "down"],
+            required: true
+        }
+    }],
     points: {
         type: Number,
         default: 0
+    },
+    message: {
+        type: String,
+        required: true
     },
     character: {
         type: Schema.Types.ObjectId,
@@ -28,11 +40,33 @@ const commentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "article",
     },
-    childOf: {
-        type: Schema.Types.ObjectId,
-        ref: "comment",
-        default: null
-    }
+    subComments: [{
+        user: {
+            type: String,
+            required: true
+        },
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: "user",
+            required: true
+        },
+        message: {
+            type: String,
+            required: true
+        },
+        character: {
+            type: Schema.Types.ObjectId,
+            ref: "character",
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now()
+        }
+    }]
+    
 }, {timestamps: true})
 
-module.exports = mongoose.model("Comments", commentSchema);
+module.exports = {
+    model: mongoose.model("Comments", commentSchema),
+    schema : commentSchema
+};
