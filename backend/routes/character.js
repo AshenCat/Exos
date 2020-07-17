@@ -17,7 +17,7 @@ server.route('/')
         })
     })
     .put((req, res, next) => {
-        if(req.user) {
+        if(req.user && req.user.access === "admin") {
             const character = req.body
             // console.log(character)
             if(character === null || character.name === "" || character.role === "" || character.nation === "" || character.tier === "-----" ||
@@ -62,7 +62,7 @@ server.route('/')
         else res.json({msg: 'You are not logged in', payload: null})
     })
     .patch((req, res, next) => {
-        if(req.user){
+        if(req.user && req.user.access === "admin"){
             const character = req.body
             // console.log(character)
             if(character === null || character.name === "" || character.role === "" || character.nation === "" || character.tier === "-----" ||
