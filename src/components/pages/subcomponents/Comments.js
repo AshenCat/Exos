@@ -5,43 +5,9 @@ import target from '../../helper/target'
 import axios from 'axios';
 
 const Comments = (props) => {
-    // React.useEffect(()=>{
-    //     axios.get()
-    // })
 
     const user = React.useContext(UserContext);
 
-    // const allComments = [{
-    //     _id: 0,
-    //     createdAt: new Date(),
-    //     updatedAt: new Date(),
-    //     user: "admin",
-    //     message: "Wow.jpeg",
-    //     points: 24,
-    //     character: props.character,
-    //     childOf: null
-    // }, {
-    //     _id: 1,
-    //     createdAt: new Date(),
-    //     updatedAt: new Date(),
-    //     user: "Loser",
-    //     message: "I'm a Simp",
-    //     points: 35,
-    //     character: props.character,
-    //     childOf: 2
-    // }, {
-    //     _id: 2,
-    //     createdAt: new Date(),
-    //     updatedAt: new Date(),
-    //     user: "Igor",
-    //     message: "I'm a living meme",
-    //     points: 999,
-    //     character: props.character,
-    //     childOf: null
-    // }
-    // ]
-
-    // const [subComments, setSubComments] = React.useState([])
     const [comments, setComments] = React.useState([])
 
     const submitComment = (formId) => {
@@ -49,56 +15,21 @@ const Comments = (props) => {
         const message = document.getElementById(formId).value;
         if(message.length > 0){
             if(formId === "newComment"){
-                // console.log("made a comment")
-                // setComments([...comments, {
-                //     _id: Math.random(),
-                //     user,
-                //     message,
-                //     points: 0,
-                //     // expecting id of character
-                //     character: props.character,
-                //     createdAt: new Date(),
-                //     updatedAt: new Date(),
-                // }])
-                // setTimeout(()=>{
-                //     console.log(comments)
-                // },2000)
-                // console.log(comments)
                 axios.put(`${target}/api/comment/character/${props.character}`, {
                     message,
                     character: props.character,
                     childOf: null
                 }, {withCredentials: true}).then(res=>{
-                    // console.log(res.data)
                     fetchComments();
                     document.getElementById(formId).value="";
                 })
             }
             else {
-                // console.log(formId)
-                // console.log(formId.replace('reply@', ''))
-                // setSubComments([...subComments, {
-                //     _id: Math.random(),
-                //     user,
-                //     message,
-                //     points: 0,
-                //     // only for dummy data
-                //     // childOf: parseInt(formId.replace('reply@', '')),
-                //     childOf: formId.replace('reply@', ''),
-                //     // expecting id of character
-                //     character: props.character,
-                //     createdAt: new Date(),
-                //     updatedAt: new Date(),
-                // }])
-                // setTimeout(()=>{
-                //     console.log(subComments)
-                // },2000)
                 axios.put(`${target}/api/comment/character/${props.character}`, {
                     message,
                     character: props.character,
                     childOf: formId.replace('reply@', '')
                 }, {withCredentials: true}).then(res=>{
-                    // console.log(res.data)
                     fetchComments();
                     document.getElementById(formId).value = ""
                 })
@@ -108,7 +39,7 @@ const Comments = (props) => {
 
     const fetchComments = () => {
         axios.get(`${target}/api/comment/character/${props.character}`).then(res => {
-            console.log(res.data.payload)
+
             if (res.data.payload !== null) {
                 setComments(res.data.payload.sort((a, b) => {
                     if (a.createdAt > b.createdAt) return -1;
@@ -120,15 +51,22 @@ const Comments = (props) => {
         })
     }
 
+    const deleteComment = (commentId, subCommentId) => {
+        axios.delete(`${target}/api/comment/search/${commentId}/${subCommentId}`, {withCredentials: true})
+            .then(res=>{
+                console.log(res.data)
+                fetchComments();
+            })
+    }
+
     const voteComment = (vote, id) => {
-        axios.patch(`${target}/api/comment/vote/${id}`, {vote}, {withCredentials: true}).then(res=>{
-            console.log(res.data)
-            fetchComments();
+        axios.patch(`${target}/api/comment/vote/${id}`, {vote}, {withCredentials: true})
+            .then(res=>{
+                fetchComments();
         })
     }
     
     React.useEffect(()=>{
-        // console.log('aw')
         fetchComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -186,7 +124,7 @@ const Comments = (props) => {
                                                     <Row><h6 className="mr-1" style={{"marginBottom":"0px", "display":"inline", "lineHeight":"1.5"}}>{comment.user}</h6></Row>
                                                     <Row><small>{`Posted: ${comment.createdAt.toLocaleString()}`}</small></Row>
                                                     {comment.createdAt.toString() === comment.updatedAt.toString() ? 
-                                                    null : <small><Row>Last updated: {comment.updatedAt.toLocaleString()}</Row></small>}
+                                                    null : <small><Row>Last vote: {comment.updatedAt.toLocaleString()}</Row></small>}
                                                 </div>
                                             </Row>
                                         </Col>
@@ -201,20 +139,12 @@ const Comments = (props) => {
                                         </Col>
                                     </Row>
                                     <Row>
-                                        {/* {user ? comment.user === user.username ? 
-                                        <InputGroup className="mt-3 pre-wrap-me">
-                                            <Form.Control value={comment.message} id={`edit@${comment._id}`}/>
-                                            <InputGroup.Append>
-                                                <Button variant="outline-secondary"></Button>
-                                            </InputGroup.Append>
-                                        </InputGroup> : 
-                                        <div className="mt-3 pre-wrap-me">{comment.message}</div> : <div className="mt-3 pre-wrap-me">{comment.message}</div>} */}
                                         <div className="mt-3 pre-wrap-me mb-3">{comment.message}</div>
                                     </Row>
                                     <Row className="mt-2 mb-2 flex-row-reverse">
                                         <div></div>
                                         {/* {user ? comment.user === user.username ? <Button variant="outline-info">Edit</Button> : null : null} */}
-                                        {user ? user.access === "admin" ? <Button variant="danger" size="sm">Delete</Button> : null : null}
+                                        {user ? user.access === "admin" ? <Button variant="danger" size="sm" onClick={()=>deleteComment(comment._id, null)}>Delete</Button> : null : null}
                                     </Row>
                                     <Row>
                                         <ListGroup className="width2-100">
@@ -228,6 +158,11 @@ const Comments = (props) => {
                                                             </div>
                                                         </Row>
                                                         <Row className="pl-3 mb-2"><div className="mt-3 pre-wrap-me">{subComment.message}</div></Row>
+                                                        <Row className="mt-2 mb-2 flex-row-reverse">
+                                                            <div></div>
+                                                            {/* {user ? comment.user === user.username ? <Button variant="outline-info">Edit</Button> : null : null} */}
+                                                            {user ? user.access === "admin" ? <Button variant="danger" size="sm" onClick={()=>deleteComment(comment._id, subComment._id)}>Delete</Button> : null : null}
+                                                        </Row>
                                                     </ListGroup.Item>
                                             }) : null}
                                             {/* Since comment._id is unique, I'll name each form's id with it */}

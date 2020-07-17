@@ -3,17 +3,6 @@ const mongoose = require('mongoose')
 const comment = require('../models/comment')
 const server = express.Router();
 
-server.route('/')
-    .get((req, res, next) => {
-        comment.model.find({}, (err, doc) => {
-            if (err) {
-                res.status(500);
-                next(err);
-            }
-            else res.json({msg: "", payload: doc})
-        })
-    })
-
 server.route('/character/:charid')
     .get((req, res, next) => {
         const id = mongoose.Types.ObjectId(req.params.charid)
@@ -26,7 +15,6 @@ server.route('/character/:charid')
         })
     })
     .put((req, res, next) => {
-        // console.log(req.user)
         if(req.user){
             req.body.user = req.user.username;
             req.body.userId = req.user._id;
@@ -51,7 +39,7 @@ server.route('/character/:charid')
                         res.json({msg: "Comment not found...", payload: null})
                     }
                     else {
-                        doc.subComments = doc.subComments ? [...doc.subComments, req.body] : [req.body];
+                        doc.subComments.push(req.body);
                         doc.save();
                         res.json({msg: "Successfully Replied", payload: doc})
                     }
@@ -82,7 +70,6 @@ server.route('/vote/:commentid')
                     })
                     if(id) {
                         doc.points = vote === "up" ? doc.points - 1 : doc.points + 1;
-                        console.log(doc.userVotes.id(id))
                         doc.userVotes.id(id).remove();
                     }
                     doc.userVotes.push({userId: req.user._id, vote: req.body.vote});
@@ -95,4 +82,36 @@ server.route('/vote/:commentid')
         else res.json({msg: "You are not logged in...", payload: null})    
     })
     
+server.route('/search/:commentid/:subcommentid')
+    .delete((req, res, next) => {
+        if (req.user && req.user.access === "admin") {
+            if(req.params.subcommentid !== "null"){
+                comment.model.findOne({_id: mongoose.Types.ObjectId(req.params.commentid)}, (err, doc)=>{
+                    if (err) {
+                        res.status(500)
+                        next(err);
+                    }
+                    else if (!doc) res.json({msg: "Comment not found...", payload: null})
+                    else {
+                        doc.subComments.id(req.params.subcommentid).remove();
+                        doc.save();
+                        res.json({msg: "Successfully deleted subcomment...", payload: null})
+                    }
+                })
+            }
+            else {
+                comment.model.findByIdAndDelete(mongoose.Types.ObjectId(req.params.commentid), (err, doc) => {
+                    if (err) {
+                        res.status(500);
+                        next(err);
+                    }
+                    else if (!doc) res.json({msg: "Comment not found...", payload: null})
+                    else res.json({msg: "Successfully deleted comment...", payload: null})
+                })
+            }
+        }
+        else res.json({msg: "you are not logged in...", payload: null})
+    })
+
+
 module.exports = server;
