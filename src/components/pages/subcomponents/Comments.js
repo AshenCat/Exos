@@ -41,7 +41,7 @@ const Comments = (props) => {
     // }
     // ]
 
-    const [subComments, setSubComments] = React.useState([])
+    // const [subComments, setSubComments] = React.useState([])
     const [comments, setComments] = React.useState([])
 
     const submitComment = (formId) => {
@@ -67,6 +67,7 @@ const Comments = (props) => {
                 axios.put(`${target}/api/comment/character/${props.character}`, {
                     message,
                     character: props.character,
+                    childOf: null
                 }, {withCredentials: true}).then(res=>{
                     // console.log(res.data)
                     fetchComments();
@@ -108,14 +109,12 @@ const Comments = (props) => {
     const fetchComments = () => {
         axios.get(`${target}/api/comment/character/${props.character}`).then(res => {
             console.log(res.data.payload)
-            setComments(res.data.payload.sort((a, b) => {
-                if (a.createdAt > b.createdAt) return -1;
-                else return 1
-            }).filter((comment) => comment.childOf === null))
-            setSubComments(res.data.payload.sort((a, b) => {
-                if (a.createdAt > b.createdAt) return -1;
-                else return 1
-            }).filter((comment) => comment.childOf !== null))
+            if (res.data.payload !== null) {
+                setComments(res.data.payload.sort((a, b) => {
+                    if (a.createdAt > b.createdAt) return -1;
+                    else return 1;
+                }))
+            }
         }).catch(err =>{
             console.log(err)
         })
@@ -145,7 +144,7 @@ const Comments = (props) => {
                             <Card.Body>
                                 <Form className="mb-4">
                                     <Form.Row>
-                                        <Col sm={2}><Form.Label htmlFor="username">Username: </Form.Label></Col>
+                                        <Col sm={2}><Form.Label className="mb-0" htmlFor="username">Username: </Form.Label></Col>
                                         <Col md={4} sm={6}>
                                             <InputGroup>
                                                 <InputGroup.Prepend className="ml-3" >
@@ -176,7 +175,7 @@ const Comments = (props) => {
                     </Container>
                 </Row>
                 <ListGroup>
-                    {comments !== [] ? comments.map((comment, ctr) => { 
+                    {comments !== [] ? comments.map((comment, ctr) => {
                     return <ListGroup.Item key={comment._id}>
                                 <Container>
                                     <Row>
@@ -202,29 +201,35 @@ const Comments = (props) => {
                                         </Col>
                                     </Row>
                                     <Row>
-                                        <div className="mt-3 pre-wrap-me">{comment.message}</div>
+                                        {/* {user ? comment.user === user.username ? 
+                                        <InputGroup className="mt-3 pre-wrap-me">
+                                            <Form.Control value={comment.message} id={`edit@${comment._id}`}/>
+                                            <InputGroup.Append>
+                                                <Button variant="outline-secondary"></Button>
+                                            </InputGroup.Append>
+                                        </InputGroup> : 
+                                        <div className="mt-3 pre-wrap-me">{comment.message}</div> : <div className="mt-3 pre-wrap-me">{comment.message}</div>} */}
+                                        <div className="mt-3 pre-wrap-me mb-3">{comment.message}</div>
                                     </Row>
                                     <Row className="mt-2 mb-2 flex-row-reverse">
-                                        <div></div>{user ? comment.user === user.username ? <Button variant="outline-info">Edit</Button> : null : null}
+                                        <div></div>
+                                        {/* {user ? comment.user === user.username ? <Button variant="outline-info">Edit</Button> : null : null} */}
+                                        {user ? user.access === "admin" ? <Button variant="danger" size="sm">Delete</Button> : null : null}
                                     </Row>
                                     <Row>
                                         <ListGroup className="width2-100">
-                                            {subComments.map((subComment) => {
-                                            if(subComment.childOf !== comment._id) return null
-                                            else 
+                                            {comment.subComments ? comment.subComments.map((subComment) => {
                                             return  <ListGroup.Item key={subComment._id} className="width2-100">
                                                         <Row className="pl-3">
                                                             <div><img src={require("../img/Avatar1.png")} width="75px" height="75px" alt="user avatar" className="pr-2"/></div>
                                                             <div className="ml-4 mt-2">
                                                                 <Row><h6 className="mr-1" style={{"marginBottom":"0px", "display":"inline", "lineHeight":"1.5"}}>{subComment.user}</h6> replied:</Row>
                                                                 <Row><small>{`Posted: ${subComment.createdAt.toLocaleString()}`}</small></Row>
-                                                                {subComment.createdAt.toString() === subComment.updatedAt.toString() ? 
-                                                                null : <small><Row>Updated: {subComment.updatedAt.toLocaleString()}</Row></small>}
                                                             </div>
                                                         </Row>
                                                         <Row className="pl-3 mb-2"><div className="mt-3 pre-wrap-me">{subComment.message}</div></Row>
                                                     </ListGroup.Item>
-                                            })}
+                                            }) : null}
                                             {/* Since comment._id is unique, I'll name each form's id with it */}
                                             <InputGroup>
                                                 <Form.Control 
@@ -236,7 +241,6 @@ const Comments = (props) => {
                                                     <Button variant="outline-secondary" onClick={()=>submitComment(`reply@${comment._id}`)}>Reply</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
-                                            <Form.Text muted>Still need to fill up username from above</Form.Text>
                                         </ListGroup>
                                     </Row>
                                 </Container>

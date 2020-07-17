@@ -109,3 +109,7 @@ body {
 .width2-100 {
   width: 100% !important;
 }
+
+.mb-0 {
+  margin-bottom: 0px !important;
+}
